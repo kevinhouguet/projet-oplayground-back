@@ -1,12 +1,14 @@
 const express = require('express');
+const routers = require('./routers');
 require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT ?? 3000;
 
-app.get('/', (req, res) => {
-  res.send('Coucou');
-});
+app.set('view engine', 'ejs');
+app.set('views', './views');
+
+app.use(routers);
 
 app.listen(port, () => {
   console.log(`Listenning on http://localhost:${port}`);
