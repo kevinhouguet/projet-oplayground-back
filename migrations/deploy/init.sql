@@ -48,24 +48,27 @@ CREATE TABLE
         "updated_at" TIMESTAMPTZ
     );
 
-CREATE TABLE "EVENT"("ID" INT GENERATED ALWAYS AS 
-	IDENTITY PRIMARY KEY,
-	"name" TEXT NOT NULL,
-	"start_date" TIMESTAMPTZ NOT NULL,
-	"stop_date" TIMESTAMPTZ NOT NULL,
-	"max_player" INT NOT NULL,
-	"member_id" INT REFERENCES "member"("id"),
-	"playground_id" INT REFERENCES "playground"("id"),
-	"created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
-	"updated_at" TIMESTAMPTZ
-	);
-	CREATE TABLE
-	    "participe" (
-	        "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-	        "event_id" INT NOT NULL,
-	        "member_id" INT NOT NULL,
-	        "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
-	        "updated_at" TIMESTAMPTZ,
-	        UNIQUE ("event_id", "member_id")
-	    );
-	COMMIT;
+CREATE TABLE
+    "encounter"(
+        "ID" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+        "name" TEXT NOT NULL,
+        "start_date" TIMESTAMPTZ NOT NULL,
+        "stop_date" TIMESTAMPTZ NOT NULL,
+        "max_player" INT NOT NULL,
+        "member_id" INT REFERENCES "member"("id"),
+        "playground_id" INT REFERENCES "playground"("id"),
+        "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+        "updated_at" TIMESTAMPTZ
+    );
+
+CREATE TABLE
+    "participe" (
+        "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+        "encounter_id" INT NOT NULL,
+        "member_id" INT NOT NULL,
+        "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+        "updated_at" TIMESTAMPTZ,
+        UNIQUE ("encounter_id", "member_id")
+    );
+
+COMMIT;
