@@ -48,48 +48,42 @@ const getCommunes = require('./getCommunes');
   ];
 
 
-const groundNature = ['dur', 'parquet','terre battue', 'gazon', 'synthétique','moquette'
+const groundNature = ['dur', 'parquet','terre battue', 'gazon', 'synthétique','moquette'];
 
-
-
-
-]
-
-
-
-
-
-
+const eventName = ['partie entre amis', 'sport entre amis', 'retrouvailles', ' le grand match'];
 
   function createRandomPlayground() {
     return {
       name: playgroundName[getRandomInt(0, playgroundName.length)],
-      groundNature: groundNature [getRandomInt(0,groundNature.length)],
+      groundNature: groundNature[getRandomInt(0,groundNature.length)],
       address: faker.address.streetAddress (),
       zip_code: communes[getRandomInt(0, communes.length)].codesPostaux[0],
       city: communes[getRandomInt(0, communes.length)].nom,
       picture: '',
      
-
-
     }
 
   }
 
 
   const playground = await createRandomPlayground();
-  console.log(playground);
+  //console.log(playground);
 
 
+  function createRandomEvent () {
+    return {
+      name: eventName[getRandomInt(0, eventName.length)],
+      date: faker.date.soon(),
+      maxPlayer: 11,
+   }
+}
 
-
-
+const event = await createRandomEvent()
+console.log(event)
 
 
 
   // TODO :
-  // faire pour le playground
-  // faire pour les events -> attention aux cle etrangeres
   // anticiper envoie vers bdd
   // creation d'un type sql qui prend du json
 })();
