@@ -1,3 +1,4 @@
 %syntax-version=1.0.0
 %project=migrations
 
+init 2023-02-20T14:07:18Z 'Kevin <'k.houguet@gmail.com'> # init db
