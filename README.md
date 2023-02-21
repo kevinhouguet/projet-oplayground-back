@@ -38,6 +38,10 @@ PGPORT=
 npm start
 ```
 
+## How to fake it ?
+
+...
+
 ## API architecture
 
 ...
