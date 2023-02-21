@@ -3,6 +3,9 @@ const getRandomInt = require('../app/helpers/getRandomInt');
 
 const getCommunes = require('./getCommunes');
 
+// const getPlayground = require ('./getPlayground');
+
+
 (async () => {
   const communes = await getCommunes();
 
@@ -21,11 +24,66 @@ const getCommunes = require('./getCommunes');
   }
 
   const member = await createRandomMember();
-  console.log(member);
+  //console.log(member);
+
+  const playgroundName = [
+    'stade Jean le Bon',
+    'salle Jean-Claude Picard',
+    'Complexe sportif Marcel Pigou',
+    'stade Carpentier',
+    'stade André Laurent',
+    'stade Le Tiec',
+    'stade Boutroux',
+    'centre sportif Jules Noêl',
+    'stade René Rousseau',
+    'centre sportif La Plaine',
+    'stade Paul Faber',
+    'centre sportif Jesse Owens',
+    'terrain de sport Lemercier',
+    'centre sportif de Courcelles',
+    'playground Daniel Narcisse',
+    'stade municipal Nelson Paillou',
+    'complexe sportif Jean Jaurès',
+    'espace sportif Jean Pierre Rives',
+  ];
+
+
+const groundNature = ['dur', 'parquet','terre battue', 'gazon', 'synthétique','moquette'];
+
+const eventName = ['partie entre amis', 'sport entre amis', 'retrouvailles', ' le grand match'];
+
+  function createRandomPlayground() {
+    return {
+      name: playgroundName[getRandomInt(0, playgroundName.length)],
+      groundNature: groundNature[getRandomInt(0,groundNature.length)],
+      address: faker.address.streetAddress (),
+      zip_code: communes[getRandomInt(0, communes.length)].codesPostaux[0],
+      city: communes[getRandomInt(0, communes.length)].nom,
+      picture: '',
+     
+    }
+
+  }
+
+
+  const playground = await createRandomPlayground();
+  //console.log(playground);
+
+
+  function createRandomEvent () {
+    return {
+      name: eventName[getRandomInt(0, eventName.length)],
+      date: faker.date.soon(),
+      maxPlayer: 11,
+   }
+}
+
+const event = await createRandomEvent()
+console.log(event)
+
+
 
   // TODO :
-  // faire pour le playground
-  // faire pour les events -> attention aux cle etrangeres
   // anticiper envoie vers bdd
   // creation d'un type sql qui prend du json
 })();
