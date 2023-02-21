@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx nodemon app",
-    "seed": "node data/buildData.js"
+    "seed": "node data/buildData.js",
+    "build": "node app"
   },
   "repository": {
     "type": "git",
