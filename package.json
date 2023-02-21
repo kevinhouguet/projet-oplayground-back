@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npx nodemon app",
     "seed": "node data/buildData.js",
-    "web": "node app"
+    "start": "node app"
   },
   "repository": {
     "type": "git",
