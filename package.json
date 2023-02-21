@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npx nodemon app",
     "seed": "node data/buildData.js",
-    "build": "node app"
+    "start": "node app"
   },
   "repository": {
     "type": "git",
@@ -21,14 +21,15 @@
   "homepage": "https://github.com/O-clock-Maya/projet-05-terrain-de-sport-back#readme",
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
-    "dotenv": "^16.0.3",
     "eslint": "^8.34.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5"
   },
   "dependencies": {
+    "ejs": "^3.1.8",
     "express": "^4.18.2",
     "node-fetch": "^3.3.0",
-    "pg": "^8.9.0"
+    "pg": "^8.9.0",
+    "dotenv": "^16.0.3"
   }
 }
