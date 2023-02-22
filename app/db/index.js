@@ -4,11 +4,11 @@ const { Client } = require('pg');
 let client;
 
 if (process.env.NODE_ENV === 'production') {
-  client = new Client();
-} else {
   client = new Client({
     connectionString: process.env.DATABASE_URL,
   });
+} else {
+  client = new Client();
 }
 console.log(process.env.DATABASE_URL);
 console.log(process.env.NODE_ENV);
