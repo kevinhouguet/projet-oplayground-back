@@ -59,27 +59,21 @@ SQL;
 CREATE FUNCTION "INSERTENCOUNTER"(encounter JSON) RETURNS 
 encounter AS $$ 
 	INSERT INTO
-	    "encoutner" (
+	    "encounter" (
 	        "name",
 			"member_id",
 	        "start_date",
 	        "stop_date",
-	        "max-player",
-	        "playground",
-	        "created_at", 
-			"updated_at"
+	        "max_player",
+	        "playground_id"
 	    )
 	VALUES (
-	        playground ->> 'name',
-			playground ->> 'member_id'
-	        playground ->> 'start_date',
-	        playground ->> 'stop_date',
-	        playground ->> 'max_player',
-	        playground ->> 'playground',
-			playground ->> 'created_ad',
-			playground ->> 'updated_at'
-			
- 
+	        encounter ->> 'name',
+			(encounter ->> 'member_id')::INT,
+	        (encounter ->> 'start_date')::TIMESTAMPTZ,
+	        (encounter ->> 'stop_date')::TIMESTAMPTZ,
+	        (encounter ->> 'max_player')::INT,
+	        (encounter ->> 'playground_id')::INT
 	    )
 	RETURNING *;
 	$$ LANGUAGE 
