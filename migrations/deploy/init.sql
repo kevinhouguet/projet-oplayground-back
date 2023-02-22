@@ -1,3 +1,5 @@
+-- SQLBook: Code
+
 -- Deploy migrations:init to pg
 
 BEGIN;
@@ -50,7 +52,7 @@ CREATE TABLE
 
 CREATE TABLE
     "encounter"(
-        "ID" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+        "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
         "name" TEXT NOT NULL,
         "start_date" TIMESTAMPTZ NOT NULL,
         "stop_date" TIMESTAMPTZ NOT NULL,
