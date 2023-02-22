@@ -1,7 +1,13 @@
 require('dotenv').config();
 const { Client } = require('pg');
 
-const client = new Client();
+let client;
+
+if (process.env.NODE_ENV === 'production') {
+  client = new Client();
+} else {
+  client = new Client(process.env.DATABASE_URL);
+}
 
 client.connect()
   .then(() => console.log('DB Connexion : OK'))
