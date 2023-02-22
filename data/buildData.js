@@ -75,10 +75,13 @@ const getCommunes = require('./getCommunes');
   // console.log(playground);
 
   function createRandomEvent() {
+
+    const date = faker.date.soon();
     return {
       name: eventName[getRandomInt(0, eventName.length)],
-      date: faker.date.soon(),
       maxPlayer: 11,
+      start_date: date
+      stop_date: date.setUTCHours(date.getUTCHours()+2)
     };
   }
 
