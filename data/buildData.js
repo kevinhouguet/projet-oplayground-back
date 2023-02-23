@@ -82,8 +82,13 @@ const insertData = {
   },
 
   async insertEvent(event) {
-    const query = `SELECT * FROM"insert_encounter"('${JSON.stringify(event)}');`;
-    const result = await db.query(query);
+    const querySelectOneMember = `SELECT * FROM "member" ORDER BY random() LIMIT 1;`;
+    const resultOfSelect = db.query(querySelectOneMember);
+
+    const queryInsertEvent = `SELECT * FROM "insert_encounter"('${JSON.stringify(event)}');`;
+    const resultOfInsertion = db.query(queryInsertEvent);
+
+    const result = await Promise.all([resultOfSelect, resultOfInsertion]);
     return result.rows;
   },
 };
@@ -98,7 +103,5 @@ const insertData = {
   const newPlayground = await insertData.insertPlayground(playground);
 
   const event = await createData.createRandomEvent();
-  console.log(event.start_date);
-  console.log(event.start_date);
   const newEvent = await insertData.insertEvent(event);
 })();
