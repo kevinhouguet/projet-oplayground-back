@@ -1,9 +1,10 @@
 
 function controllerWrapper(middleware){
-  return (req, res, next) => {
+  return async (req, res, next) => {
     try {
-      middleware(req, res, next);
+      await middleware(req, res, next);
     } catch (err) {
+      console.log('controllerWrapper');
       res.json({error: err.message});
       // next();
     }
