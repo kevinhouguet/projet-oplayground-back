@@ -8,6 +8,8 @@ const port = process.env.PORT ?? 3000;
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
+// cors
+
 app.use(routers);
 
 app.listen(port, () => {

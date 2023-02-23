@@ -8,6 +8,7 @@ const { terrainsController, usersController } = require('../../controllers');
 apiRouter.get('/terrains', terrainsController.getTerrains);
 //
 
-apiRouter.get('/users', usersController.getAllMember);
+// apiRouter.get('/users', usersController.getAllMember);
+apiRouter.get('/users/:id', usersController.getOneMember);
 
 module.exports = apiRouter;
