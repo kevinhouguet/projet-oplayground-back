@@ -6,7 +6,6 @@ function controllerWrapper(middleware){
     } catch (err) {
       console.log('controllerWrapper');
       res.json({error: err.message});
-      // next();
     }
   }
 }

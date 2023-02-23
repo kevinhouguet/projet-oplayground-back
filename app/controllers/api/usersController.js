@@ -24,7 +24,7 @@ module.exports = {
     const searchMemberUsername = await datamapper.getOneMemberByUsername(users.username);
 
     if(searchMmemberEmail || searchMemberUsername){
-      throw new Error('test');
+      throw new Error('user already exist');
     } 
 
     const newUser = await datamapper.addOneMember(users);
