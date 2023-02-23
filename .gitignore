@@ -1,9 +1,5 @@
 node_modules/
 .env
-<<<<<<< HEAD
-sqitch.conf
-=======
 sqitch.conf
 .eslintrc.js
 test.http
->>>>>>> kevin
