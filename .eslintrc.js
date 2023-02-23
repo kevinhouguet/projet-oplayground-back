@@ -11,7 +11,8 @@ module.exports = {
     ecmaVersion: 'latest',
   },
   rules: {
-    linebreak-style: ["error", "windows"]
-    // linebreak-style: ["error", "unix"]
+   // linebreak-style: ["error", "windows"]
+    linebreak-style: ["error", "unix"]
+
   },
 };
