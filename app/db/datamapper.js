@@ -71,7 +71,3 @@ module.exports = {
   addOneMember,
   getOneMemberByUsername
 };
-
-// (async () =>{
-//   console.log(await getOneMember(1))
-// })()

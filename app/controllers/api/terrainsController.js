@@ -1,10 +1,8 @@
 module.exports = {
-  getTerrains(req, res) {
-    res.json({ message: 'voici la liste des terrains' });
-  },
 
   playgroundList:(req,res) => {
     res.json({message:'salut noob'})
+    // throw new Error('salut');
   },
 
   playgroundById:(req,res) => {
