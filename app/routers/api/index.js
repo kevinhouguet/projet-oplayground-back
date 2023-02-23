@@ -2,6 +2,8 @@ const { Router } = require('express');
 
 const apiRouter = new Router();
 
+const controllerWrapper = require('../../controllers/api/controllerWrapper');
+
 const { terrainsController, usersController } = require('../../controllers');
 
 // exemple :
@@ -18,7 +20,7 @@ module.exports = apiRouter;
 
 
 
-apiRouter.get('/terrains', terrainsController.playgroundList) 
+apiRouter.get('/terrains', controllerWrapper(terrainsController.playgroundList)) 
 
 
 
@@ -27,4 +29,5 @@ apiRouter.get('/terrains/:id',terrainsController.playgroundById)
 
 
 apiRouter.get('/terrains/:id/events', terrainsController.playgroundEvent);
-    
+
+
