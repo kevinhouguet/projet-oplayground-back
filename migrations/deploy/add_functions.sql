@@ -2,7 +2,7 @@
 
 BEGIN;
 
-CREATE FUNCTION "INSERTMEMBER"(MEMBER JSON) RETURNS 
+CREATE FUNCTION "insert_member"(MEMBER JSON) RETURNS 
 MEMBER AS $$ 
 	INSERT INTO
 	    "member" (
@@ -29,7 +29,7 @@ MEMBER AS $$
 	RETURNING *;
 	$$ LANGUAGE 
 SQL; 
-CREATE FUNCTION "INSERTPLAYGROUND"(playground JSON) RETURNS 
+CREATE FUNCTION "insert_playground"(playground JSON) RETURNS 
 playground AS $$ 
 	INSERT INTO
 	    "playground" (
@@ -56,7 +56,7 @@ SQL;
 
 
 
-CREATE FUNCTION "INSERTENCOUNTER"(encounter JSON) RETURNS 
+CREATE FUNCTION "insert_encounter"(encounter JSON) RETURNS 
 encounter AS $$ 
 	INSERT INTO
 	    "encounter" (
@@ -69,7 +69,7 @@ encounter AS $$
 	    )
 	VALUES (
 	        encounter ->> 'name',
-			(encounter ->> 'member_id')::INT,
+					(encounter ->> 'member_id')::INT,
 	        (encounter ->> 'start_date')::TIMESTAMPTZ,
 	        (encounter ->> 'stop_date')::TIMESTAMPTZ,
 	        (encounter ->> 'max_player')::INT,
