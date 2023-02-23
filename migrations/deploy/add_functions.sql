@@ -2,8 +2,7 @@
 
 BEGIN;
 
-CREATE FUNCTION "insert_member"(MEMBER JSON) RETURNS 
-MEMBER AS $$ 
+CREATE FUNCTION "insert_member"(o_member json) RETURNS "member" AS $$ 
 	INSERT INTO
 	    "member" (
 	        "email",
@@ -17,20 +16,20 @@ MEMBER AS $$
 	        "city"
 	    )
 	VALUES (
-	        member ->> 'email',
-	        member ->> 'username',
-	        member ->> 'password',
-	        member ->> 'firstname',
-	        member ->> 'lastname',
-	        member ->> 'avatar', (member ->> 'age') :: int,
-	        member ->> 'sexe',
-	        member ->> 'city'
+	        o_member ->> 'email',
+	        o_member ->> 'username',
+	        o_member ->> 'password',
+	        o_member ->> 'firstname',
+	        o_member ->> 'lastname',
+	        o_member ->> 'avatar', 
+					(o_member ->> 'age') :: int,
+	        o_member ->> 'sexe',
+	        o_member ->> 'city'
 	    )
 	RETURNING *;
-	$$ LANGUAGE 
-SQL; 
-CREATE FUNCTION "insert_playground"(playground JSON) RETURNS 
-playground AS $$ 
+	$$ LANGUAGE SQL STRICT;
+	
+CREATE FUNCTION "insert_playground"(playground JSON) RETURNS playground AS $$ 
 	INSERT INTO
 	    "playground" (
 	        "name",
@@ -50,18 +49,16 @@ playground AS $$
  
 	    )
 	RETURNING *;
-	$$ LANGUAGE 
-SQL; 
+$$ LANGUAGE SQL; 
 
 
 
 
-CREATE FUNCTION "insert_encounter"(encounter JSON) RETURNS 
-encounter AS $$ 
+CREATE FUNCTION "insert_encounter"(encounter JSON) RETURNS encounter AS $$ 
 	INSERT INTO
 	    "encounter" (
 	        "name",
-			"member_id",
+					"member_id",
 	        "start_date",
 	        "stop_date",
 	        "max_player",
@@ -76,8 +73,7 @@ encounter AS $$
 	        (encounter ->> 'playground_id')::INT
 	    )
 	RETURNING *;
-	$$ LANGUAGE 
-SQL; 
+$$ LANGUAGE SQL; 
 
 
 

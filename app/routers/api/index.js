@@ -2,29 +2,21 @@ const { Router } = require('express');
 
 const apiRouter = new Router();
 
-const { terrainsController, usersController } = require('../../controllers');
+const { terrainsController, usersController, controllerWrapper  } = require('../../controllers');
 
-// exemple :
-//apiRouter.get('/terrains', terrainsController.getTerrains);
-//
+apiRouter.get('/users/:id', controllerWrapper(usersController.getOneMember));
+apiRouter.post('/users', controllerWrapper(usersController.addOneMember));
 
-// apiRouter.get('/users', usersController.getAllMember);
-apiRouter.get('/users/:id', usersController.getOneMember);
+apiRouter.get('/terrains', controllerWrapper(terrainsController.playgroundList));
+
+apiRouter.get('/terrains/:id', controllerWrapper(terrainsController.playgroundById));
+
+apiRouter.get('/terrains/:id/events', controllerWrapper(terrainsController.playgroundEvent));
+
+// ROUTE 404
+apiRouter.use((req,res) => {
+  res.status(404).json({error: 'ressource not found'});
+})
+
 
 module.exports = apiRouter;
-
-
-
-
-
-
-apiRouter.get('/terrains', terrainsController.playgroundList) 
-
-
-
-apiRouter.get('/terrains/:id',terrainsController.playgroundById)
-
-
-
-apiRouter.get('/terrains/:id/events', terrainsController.playgroundEvent);
-    

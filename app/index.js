@@ -6,9 +6,12 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
-app.set('views', './views');
+app.set('views', './app/views');
 
 // cors
+
+app.use(express.urlencoded({extended: false}));
+app.use(express.json());
 
 app.use(routers);
 

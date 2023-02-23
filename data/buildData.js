@@ -4,7 +4,6 @@ const getRandomInt = require('../app/helpers/getRandomInt');
 
 const getCommunes = require('./getCommunes');
 
-
 // FAKE DATA DEPENDANCIES
 const playgroundName = [
   'stade Jean le Bon',
@@ -29,7 +28,6 @@ const playgroundName = [
 const groundNature = ['dur', 'parquet', 'terre battue', 'gazon', 'synthétique', 'moquette'];
 const eventName = ['partie entre amis', 'sport entre amis', 'retrouvailles', ' le grand match'];
 
-
 const createData = {
   async createRandomMember(communes) {
     return {
@@ -48,7 +46,7 @@ const createData = {
   async createRandomPlayground(communes) {
     return {
       name: playgroundName[getRandomInt(0, playgroundName.length)],
-      groundNature: groundNature[getRandomInt(0, groundNature.length)],
+      surface: groundNature[getRandomInt(0, groundNature.length)],
       address: faker.address.streetAddress(),
       zip_code: communes[getRandomInt(0, communes.length)].codesPostaux[0],
       city: communes[getRandomInt(0, communes.length)].nom,
@@ -63,30 +61,35 @@ const createData = {
       name: eventName[getRandomInt(0, eventName.length)],
       maxPlayer: 11,
       start_date: date,
-      stop_date: date.setUTCHours(date.getUTCHours()+2)
+      stop_date: date.setHours(date.getHours() + 2),
     };
   },
 };
 
 const insertData = {
   async insertMember(member) {
-    const query = `SELECT "insert_member"('${JSON.stringify(member)}');`;
+    const query = `SELECT * FROM "insert_member"('${JSON.stringify(member)}');`;
     const result = await db.query(query);
 
     return result.rows;
   },
 
-  async insertPlayground (playground) {
-      const query = `SELECT "insert_playground"('${JSON.stringify(playground)}');`;
-      const result = await db.query(query);
+  async insertPlayground(playground) {
+    const query = `SELECT * FROM "insert_playground"('${JSON.stringify(playground)}');`;
+    const result = await db.query(query);
 
-      return result.rows; 
+    return result.rows;
   },
 
-  async insertEvent (event) {
-    const query = `SELECT "insert_encounter"('${JSON.stringify(event)}');`;
-    const result = await db.query(query);
-    return result.rows; 
+  async insertEvent(event) {
+    const querySelectOneMember = `SELECT * FROM "member" ORDER BY random() LIMIT 1;`;
+    const resultOfSelect = db.query(querySelectOneMember);
+
+    const queryInsertEvent = `SELECT * FROM "insert_encounter"('${JSON.stringify(event)}');`;
+    const resultOfInsertion = db.query(queryInsertEvent);
+
+    const result = await Promise.all([resultOfSelect, resultOfInsertion]);
+    return result.rows;
   },
 };
 
