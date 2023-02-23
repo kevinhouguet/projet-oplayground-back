@@ -29,5 +29,56 @@ MEMBER AS $$
 	RETURNING *;
 	$$ LANGUAGE 
 SQL; 
+CREATE FUNCTION "INSERTPLAYGROUND"(playground JSON) RETURNS 
+playground AS $$ 
+	INSERT INTO
+	    "playground" (
+	        "name",
+	        "address",
+	        "zip_code",
+	        "city",
+	        "surface",
+	        "picture"
+	    )
+	VALUES (
+	        playground ->> 'name',
+	        playground ->> 'address',
+	        playground ->> 'zip_code',
+	        playground ->> 'city',
+	        playground ->> 'surface',
+			playground ->> 'picture'
+ 
+	    )
+	RETURNING *;
+	$$ LANGUAGE 
+SQL; 
+
+
+
+
+CREATE FUNCTION "INSERTENCOUNTER"(encounter JSON) RETURNS 
+encounter AS $$ 
+	INSERT INTO
+	    "encounter" (
+	        "name",
+			"member_id",
+	        "start_date",
+	        "stop_date",
+	        "max_player",
+	        "playground_id"
+	    )
+	VALUES (
+	        encounter ->> 'name',
+			(encounter ->> 'member_id')::INT,
+	        (encounter ->> 'start_date')::TIMESTAMPTZ,
+	        (encounter ->> 'stop_date')::TIMESTAMPTZ,
+	        (encounter ->> 'max_player')::INT,
+	        (encounter ->> 'playground_id')::INT
+	    )
+	RETURNING *;
+	$$ LANGUAGE 
+SQL; 
+
+
 
 COMMIT;
