@@ -3,3 +3,4 @@ node_modules/
 sqitch.conf
 .eslintrc.js
 test.http
+.gitattributes

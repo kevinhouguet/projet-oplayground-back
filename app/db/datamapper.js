@@ -52,7 +52,7 @@ async function getOneMemberByUsername(username){
 async function addOneMember(memberObject){
   console.log(memberObject);
   const query = {
-    text: 'SELECT "insert_member"($1);',
+    text: 'SELECT * FROM "insert_member"($1);',
     values: [memberObject]
   };
   console.log(query);
@@ -61,7 +61,7 @@ async function addOneMember(memberObject){
   if(result.rows.length){
     console.log('pas de data');
   }
-  return result.rows;
+  return result.rows[0];
 }
 
 module.exports = {

@@ -4,7 +4,6 @@ const getRandomInt = require('../app/helpers/getRandomInt');
 
 const getCommunes = require('./getCommunes');
 
-
 // FAKE DATA DEPENDANCIES
 const playgroundName = [
   'stade Jean le Bon',
@@ -28,7 +27,6 @@ const playgroundName = [
 ];
 const groundNature = ['dur', 'parquet', 'terre battue', 'gazon', 'synthétique', 'moquette'];
 const eventName = ['partie entre amis', 'sport entre amis', 'retrouvailles', ' le grand match'];
-
 
 const createData = {
   async createRandomMember(communes) {
@@ -63,30 +61,30 @@ const createData = {
       name: eventName[getRandomInt(0, eventName.length)],
       maxPlayer: 11,
       start_date: date,
-      stop_date: date.setHours(date.getHours()+2)
+      stop_date: date.setHours(date.getHours() + 2),
     };
   },
 };
 
 const insertData = {
   async insertMember(member) {
-    const query = `SELECT "insert_member"('${JSON.stringify(member)}');`;
+    const query = `SELECT * FROM "insert_member"('${JSON.stringify(member)}');`;
     const result = await db.query(query);
 
     return result.rows;
   },
 
-  async insertPlayground (playground) {
-      const query = `SELECT "insert_playground"('${JSON.stringify(playground)}');`;
-      const result = await db.query(query);
+  async insertPlayground(playground) {
+    const query = `SELECT * FROM "insert_playground"('${JSON.stringify(playground)}');`;
+    const result = await db.query(query);
 
-      return result.rows; 
+    return result.rows;
   },
 
-  async insertEvent (event) {
-    const query = `SELECT "insert_encounter"('${JSON.stringify(event)}');`;
+  async insertEvent(event) {
+    const query = `SELECT * FROM"insert_encounter"('${JSON.stringify(event)}');`;
     const result = await db.query(query);
-    return result.rows; 
+    return result.rows;
   },
 };
 
@@ -101,6 +99,6 @@ const insertData = {
 
   const event = await createData.createRandomEvent();
   console.log(event.start_date);
-  console.log(Date(event.stop_date));
+  console.log(event.start_date);
   const newEvent = await insertData.insertEvent(event);
 })();
