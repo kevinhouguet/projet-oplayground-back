@@ -4,8 +4,8 @@
 
 BEGIN;
 
-DROP TABLE "participe", "encounter", "member", "playground";
+DROP TABLE "participe", "encounter", "member", "playground" CASCADE;
 
-DROP DOMAIN "email", "postal_code_fr";
+DROP DOMAIN "email", "postal_code_fr" CASCADE;
 
 COMMIT;
