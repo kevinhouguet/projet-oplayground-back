@@ -2,8 +2,7 @@
 
 BEGIN;
 
-CREATE FUNCTION "insert_member"(MEMBER JSON) RETURNS 
-MEMBER AS $$ 
+CREATE FUNCTION "insert_member"(member json) RETURNS "member" AS $$ 
 	INSERT INTO
 	    "member" (
 	        "email",
@@ -22,13 +21,14 @@ MEMBER AS $$
 	        member ->> 'password',
 	        member ->> 'firstname',
 	        member ->> 'lastname',
-	        member ->> 'avatar', (member ->> 'age') :: int,
+	        member ->> 'avatar', 
+					(member ->> 'age') :: int,
 	        member ->> 'sexe',
 	        member ->> 'city'
 	    )
 	RETURNING *;
-	$$ LANGUAGE 
-SQL; 
+	$$ LANGUAGE SQL;
+	
 CREATE FUNCTION "insert_playground"(playground JSON) RETURNS 
 playground AS $$ 
 	INSERT INTO

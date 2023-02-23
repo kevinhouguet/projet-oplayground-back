@@ -48,7 +48,7 @@ const createData = {
   async createRandomPlayground(communes) {
     return {
       name: playgroundName[getRandomInt(0, playgroundName.length)],
-      groundNature: groundNature[getRandomInt(0, groundNature.length)],
+      surface: groundNature[getRandomInt(0, groundNature.length)],
       address: faker.address.streetAddress(),
       zip_code: communes[getRandomInt(0, communes.length)].codesPostaux[0],
       city: communes[getRandomInt(0, communes.length)].nom,
@@ -63,7 +63,7 @@ const createData = {
       name: eventName[getRandomInt(0, eventName.length)],
       maxPlayer: 11,
       start_date: date,
-      stop_date: date.setUTCHours(date.getUTCHours()+2)
+      stop_date: date.setHours(date.getHours()+2)
     };
   },
 };
@@ -100,5 +100,7 @@ const insertData = {
   const newPlayground = await insertData.insertPlayground(playground);
 
   const event = await createData.createRandomEvent();
+  console.log(event.start_date);
+  console.log(Date(event.stop_date));
   const newEvent = await insertData.insertEvent(event);
 })();
