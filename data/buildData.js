@@ -32,7 +32,36 @@ const getCommunes = require('./getCommunes');
 
   const member = await createRandomMember();
   const newMember = await insertMember(member);
-  console.log(newMember);
+  //console.log(newMember);
+
+
+async function insertPlayground (playground) {
+    const query = `SELECT "INSERTPLAYGROUND"('${JSON.stringify(playground)}');`;
+    const result = await db.query(query);
+
+
+    return result.rows; 
+}
+const playground = await createRandomPlayground();
+  const newPlayground = await insertPlayground(playground);
+  //console.log(newPlayground);
+
+
+  async function insertEvent (event) {
+    const query = `SELECT "INSERTEVENT"('${JSON.stringify(event)}');`;
+    const result = await db.query(query);
+
+
+    return result.rows; 
+}
+const event = await createRandomEvent();
+  const newEvent = await insertEvent(event);
+  console.log(newEvent);
+
+
+
+
+
 
   const playgroundName = [
     'stade Jean le Bon',
@@ -71,18 +100,20 @@ const getCommunes = require('./getCommunes');
     };
   }
 
-  const playground = await createRandomPlayground();
-  // console.log(playground);
+ 
 
   function createRandomEvent() {
+
+    const date = faker.date.soon();
     return {
       name: eventName[getRandomInt(0, eventName.length)],
-      date: faker.date.soon(),
       maxPlayer: 11,
+      start_date: date,
+      stop_date: date.setUTCHours(date.getUTCHours()+2)
     };
   }
 
-  const event = await createRandomEvent();
+  //const event = await createRandomEvent();
   // console.log(event);
 
   module.exports = {
