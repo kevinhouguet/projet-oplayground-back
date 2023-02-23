@@ -1,0 +1,11 @@
+[core]
+	engine = pg
+	# plan_file = sqitch.plan
+	 top_dir = migrations
+[engine "pg"]
+	[target "prod"]
+		uri = postgres://HerokuURI
+	[target "dev"]
+		uri = db:pg:DBNAME
+	# registry = sqitch
+	# client = psql.exe
