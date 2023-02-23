@@ -10,6 +10,9 @@ app.set('views', './views');
 
 // cors
 
+app.use(express.urlencoded({extended: false}));
+app.use(express.json());
+
 app.use(routers);
 
 app.listen(port, () => {

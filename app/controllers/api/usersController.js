@@ -17,4 +17,19 @@ module.exports = {
 
     res.json(members);
   },
+
+  async addOneMember(req, res) {
+    const users = req.body;
+
+    const searchMmemberEmail = await datamapper.getOneMemberByEmail(users.email);
+    const searchMemberUsername = await datamapper.getOneMemberByUsername(users.username);
+
+    if(searchMmemberEmail || searchMemberUsername){
+      return res.json({error: 'user existing in db'})
+    }
+
+    const newUser = await datamapper.addOneMember(users);
+
+    res.json(newUser);
+  }
 };
