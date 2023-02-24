@@ -61,6 +61,19 @@ async function addOneMember(memberObject) {
   return result.rows[0];
 }
 
+async function deleteOneMember(id) {
+  const query = {
+    text: 'DELETE',
+    values: [memberObject],
+  };
+
+  const result = await db.query(query);
+  if (result.rows.length) {
+    console.log('pas de data');
+  }
+  return result.rows[0];
+}
+
 module.exports = {
   getAllMember,
   getOneMember,
