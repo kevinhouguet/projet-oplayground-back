@@ -8,10 +8,8 @@ if (process.env.NODE_ENV === 'production') {
     connectionString: `${process.env.DATABASE_URL}`,
     ssl: true,
   });
-  console.log('prod')
 } else {
   client = new Client();
-  console.log('dev')
 }
 
 client.connect()

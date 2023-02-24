@@ -3,7 +3,7 @@ const { Router } = require('express');
 const websiteRouter = new Router();
 
 websiteRouter.get('/', (req, res) => {
-  res.send('Route principal');
+  res.render('home');
 });
 
 websiteRouter.use((req,res) => {
