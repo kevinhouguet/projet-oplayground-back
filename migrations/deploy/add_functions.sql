@@ -1,3 +1,4 @@
+-- Active: 1676920512537@@127.0.0.1@5432@oplayground
 -- Deploy migrations:add_functions to pg
 
 BEGIN;
@@ -27,7 +28,7 @@ CREATE FUNCTION "insert_member"(o_member json) RETURNS "member" AS $$
 	        o_member ->> 'city'
 	    )
 	RETURNING *;
-	$$ LANGUAGE SQL STRICT;
+$$ LANGUAGE SQL STRICT;
 	
 CREATE FUNCTION "insert_playground"(playground JSON) RETURNS playground AS $$ 
 	INSERT INTO
@@ -74,7 +75,6 @@ CREATE FUNCTION "insert_encounter"(encounter JSON) RETURNS encounter AS $$
 	    )
 	RETURNING *;
 $$ LANGUAGE SQL; 
-
 
 
 COMMIT;
