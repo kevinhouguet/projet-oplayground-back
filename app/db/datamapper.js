@@ -49,12 +49,10 @@ async function getOneMemberByUsername(username) {
 }
 
 async function addOneMember(memberObject) {
-  console.log(memberObject);
   const query = {
     text: 'SELECT * FROM "insert_member"($1);',
     values: [memberObject],
   };
-  console.log(query);
 
   const result = await db.query(query);
   if (result.rows.length) {

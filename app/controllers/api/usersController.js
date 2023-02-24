@@ -1,4 +1,7 @@
+const bcrypt = require('bcrypt');
 const datamapper = require('../../db/datamapper');
+
+const saltRounds = 10;
 
 module.exports = {
   async getAllMember(req, res) {
@@ -19,15 +22,30 @@ module.exports = {
   },
 
   async addOneMember(req, res) {
-    const users = req.body;
-    const searchMmemberEmail = await datamapper.getOneMemberByEmail(users.email);
-    const searchMemberUsername = await datamapper.getOneMemberByUsername(users.username);
+    const user = req.body;
+    const searchMmemberEmail = await datamapper.getOneMemberByEmail(user.email);
+    const searchMemberUsername = await datamapper.getOneMemberByUsername(user.username);
 
     if (searchMmemberEmail || searchMemberUsername) {
       throw new Error('user already exist');
     }
 
-    const newUser = await datamapper.addOneMember(users);
+    const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+
+    user.password = hashedPassword;
+
+    let newUser = await datamapper.addOneMember(user);
+
+    newUser = {
+      firstname: newUser.firstname,
+      lastname: newUser.lastname,
+      username: newUser.username,
+      email: newUser.email,
+      avatar: newUser.avatar,
+      age: newUser.age,
+      sexe: newUser.sexe,
+      city: newUser.city,
+    };
 
     res.json(newUser);
   },
