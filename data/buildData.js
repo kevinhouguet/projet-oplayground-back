@@ -39,17 +39,17 @@ const createData = {
       avatar: faker.internet.avatar(),
       age: getRandomInt(13, 80),
       sexe: faker.name.sex(),
-      city: communes[getRandomInt(0, communes.length)].nom,
+      city: communes[getRandomInt(0, communes.length - 1)].nom.replaceAll("'", "''"),
     };
   },
 
   async createRandomPlayground(communes) {
     return {
-      name: playgroundName[getRandomInt(0, playgroundName.length)],
-      surface: groundNature[getRandomInt(0, groundNature.length)],
-      address: faker.address.streetAddress(),
-      zip_code: communes[getRandomInt(0, communes.length)].codesPostaux[0],
-      city: communes[getRandomInt(0, communes.length)].nom,
+      name: playgroundName[getRandomInt(0, playgroundName.length - 1)],
+      surface: groundNature[getRandomInt(0, groundNature.length - 1)],
+      address: faker.address.streetAddress().replaceAll("'", "''"),
+      zip_code: communes[getRandomInt(0, communes.length - 1)].codesPostaux[0],
+      city: communes[getRandomInt(0, communes.length - 1)].nom.replaceAll("'", "''"),
       picture: '',
 
     };
@@ -58,10 +58,11 @@ const createData = {
   async createRandomEvent() {
     const date = faker.date.soon();
     return {
-      name: eventName[getRandomInt(0, eventName.length)],
-      maxPlayer: 11,
+      name: eventName[getRandomInt(0, eventName.length - 1)],
+      max_player: 11,
       start_date: date,
-      stop_date: date.setHours(date.getHours() + 2),
+      // https://www.scaler.com/topics/timestamp-to-date-javascript/
+      stop_date: new Date(date.setHours(date.getHours() + 2)).toJSON(),
     };
   },
 };
@@ -82,26 +83,37 @@ const insertData = {
   },
 
   async insertEvent(event) {
-    const querySelectOneMember = `SELECT * FROM "member" ORDER BY random() LIMIT 1;`;
-    const resultOfSelect = db.query(querySelectOneMember);
+    const querySelectOneMember = 'SELECT * FROM "member" ORDER BY random() LIMIT 1;';
+    const resultOfSelect = await db.query(querySelectOneMember);
+
+    const querySelectOnePlayground = 'SELECT * FROM "playground" ORDER BY random() LIMIT 1;';
+    const resultOfSelectOnePlayground = await db.query(querySelectOnePlayground);
+
+    event.member_id = resultOfSelect.rows[0].id;
+    event.playground_id = resultOfSelectOnePlayground.rows[0].id;
 
     const queryInsertEvent = `SELECT * FROM "insert_encounter"('${JSON.stringify(event)}');`;
-    const resultOfInsertion = db.query(queryInsertEvent);
+    const resultOfInsertion = await db.query(queryInsertEvent);
 
-    const result = await Promise.all([resultOfSelect, resultOfInsertion]);
-    return result.rows;
+    // const result = await Promise.all([resultOfSelect, resultOfInsertion]);
+    return resultOfInsertion.rows;
   },
 };
 
 (async () => {
   const communes = await getCommunes();
 
-  const member = await createData.createRandomMember(communes);
-  const newMember = await insertData.insertMember(member);
+  Array.from({ length: 100 }, async () => {
+    const member = await createData.createRandomMember(communes);
+    console.log(member);
+    const newMember = await insertData.insertMember(member);
 
-  const playground = await createData.createRandomPlayground(communes);
-  const newPlayground = await insertData.insertPlayground(playground);
+    const playground = await createData.createRandomPlayground(communes);
+    console.log(playground);
+    const newPlayground = await insertData.insertPlayground(playground);
 
-  const event = await createData.createRandomEvent();
-  const newEvent = await insertData.insertEvent(event);
+    const event = await createData.createRandomEvent();
+    console.log(event);
+    const newEvent = await insertData.insertEvent(event);
+  });
 })();
