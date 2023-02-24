@@ -12,7 +12,7 @@ module.exports = {
   async getOneMember(req, res) {
     const { id: userId } = req.params;
 
-    if (userId && isNaN(parseInt(userId))) {
+    if (userId && isNaN(parseInt(userId, 10))) {
       return res.json({ error: 'userId obligatoire' });
     }
 
@@ -23,10 +23,10 @@ module.exports = {
 
   async addOneMember(req, res) {
     const user = req.body;
-    const searchMmemberEmail = await datamapper.getOneMemberByEmail(user.email);
+    const searchMemberEmail = await datamapper.getOneMemberByEmail(user.email);
     const searchMemberUsername = await datamapper.getOneMemberByUsername(user.username);
 
-    if (searchMmemberEmail || searchMemberUsername) {
+    if (searchMemberEmail || searchMemberUsername) {
       throw new Error('user already exist');
     }
 
@@ -67,8 +67,8 @@ module.exports = {
     const { id: userId } = req.params;
     const user = req.body;
 
-    if (userId && isNaN(parseInt(userId))) {
-      return res.json({ error: 'userId obligatoire' });
+    if (userId && isNaN(parseInt(userId, 10))) {
+      throw new Error('userId obligatoire');
     }
 
     const hashedPassword = await bcrypt.hash(user.password, saltRounds);
@@ -90,5 +90,33 @@ module.exports = {
     };
 
     res.status(200).json(memberUpdated);
+  },
+
+  async compareMember(req, res) {
+    const user = req.body;
+
+    let searchMemberEmail = await datamapper.getOneMemberByEmail(user.email);
+
+    const match = await bcrypt.compare(user.password, searchMemberEmail.password);
+
+    if (match) {
+      searchMemberEmail = {
+        id: searchMemberEmail.id,
+        email: searchMemberEmail.email,
+        username: searchMemberEmail.username,
+        firstname: searchMemberEmail.firstname,
+        lastname: searchMemberEmail.lastname,
+        avatar: searchMemberEmail.avatar,
+        age: searchMemberEmail.age,
+        sexe: searchMemberEmail.sexe,
+        city: searchMemberEmail.city,
+        created_at: searchMemberEmail.created_at,
+        updated_at: searchMemberEmail.updated_at,
+      };
+
+      res.status(200).json(searchMemberEmail);
+    } else {
+      throw new Error('user mail or password incorrect');
+    }
   },
 };

@@ -9,6 +9,8 @@ apiRouter.get('/users/:id', controllerWrapper(usersController.getOneMember));
 apiRouter.delete('/users/:id', controllerWrapper(usersController.deleteOneMember));
 apiRouter.patch('/users/:id', controllerWrapper(usersController.updateOneMember));
 
+apiRouter.post('/users/signin', controllerWrapper(usersController.compareMember));
+
 apiRouter.get('/terrains', controllerWrapper(terrainsController.playgroundList));
 
 apiRouter.get('/terrains/:id', controllerWrapper(terrainsController.playgroundById));

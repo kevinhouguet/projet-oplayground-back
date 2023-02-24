@@ -16,9 +16,6 @@ async function getOneMember(id) {
   };
 
   const result = await db.query(query);
-  if (!result.rows.length) {
-    throw new Error('user not found');
-  }
   return result.rows[0];
 }
 
@@ -29,9 +26,6 @@ async function getOneMemberByEmail(email) {
   };
 
   const result = await db.query(query);
-  if (result.rows.length) {
-    console.log('pas de data');
-  }
   return result.rows[0];
 }
 
@@ -42,9 +36,6 @@ async function getOneMemberByUsername(username) {
   };
 
   const result = await db.query(query);
-  if (result.rows.length) {
-    console.log('pas de data');
-  }
   return result.rows[0];
 }
 
@@ -55,9 +46,6 @@ async function addOneMember(memberObject) {
   };
 
   const result = await db.query(query);
-  if (result.rows.length) {
-    console.log('pas de data');
-  }
   return result.rows[0];
 }
 
