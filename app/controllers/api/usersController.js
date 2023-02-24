@@ -53,15 +53,11 @@ module.exports = {
   async deleteOneMember(req, res) {
     const { id: userId } = req.params;
 
-    if (userId && isNaN(parseInt(userId))) {
-      return res.json({ error: 'userId obligatoire' });
+    if (userId && isNaN(parseInt(userId, 10))) {
+      throw new Error('userId obligatoire');
     }
 
-    const member = await datamapper.getOneMember(parseInt(userId, 10));
-
-    if (!member) {
-      throw new Error('user not found');
-    }
+    await datamapper.getOneMember(parseInt(userId, 10));
 
     await datamapper.deleteOneMember(parseInt(userId, 10));
 

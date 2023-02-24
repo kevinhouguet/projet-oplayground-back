@@ -12,12 +12,12 @@ async function getAllMember() {
 async function getOneMember(id) {
   const query = {
     text: 'SELECT * FROM "member" WHERE id=$1;',
-    values: [parseInt(id)],
+    values: [id],
   };
 
   const result = await db.query(query);
-  if (result.rows.length) {
-    console.log('pas de data');
+  if (!result.rows.length) {
+    throw new Error('user not found');
   }
   return result.rows[0];
 }
@@ -63,15 +63,11 @@ async function addOneMember(memberObject) {
 
 async function deleteOneMember(id) {
   const query = {
-    text: 'DELETE',
-    values: [memberObject],
+    text: 'DELETE FROM "member" WHERE id=$1',
+    values: [id],
   };
 
-  const result = await db.query(query);
-  if (result.rows.length) {
-    console.log('pas de data');
-  }
-  return result.rows[0];
+  await db.query(query);
 }
 
 module.exports = {
@@ -80,4 +76,5 @@ module.exports = {
   getOneMemberByEmail,
   addOneMember,
   getOneMemberByUsername,
+  deleteOneMember,
 };
