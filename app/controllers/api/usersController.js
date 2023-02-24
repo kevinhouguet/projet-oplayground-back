@@ -63,4 +63,32 @@ module.exports = {
 
     res.status(202).json({ message: 'user deleted successfully' });
   },
+  async updateOneMember(req, res) {
+    const { id: userId } = req.params;
+    const user = req.body;
+
+    if (userId && isNaN(parseInt(userId))) {
+      return res.json({ error: 'userId obligatoire' });
+    }
+
+    const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+
+    user.password = hashedPassword;
+
+    let memberUpdated = await datamapper.updateOneMember(user, parseInt(userId, 10));
+
+    memberUpdated = {
+      id: memberUpdated.id,
+      firstname: memberUpdated.firstname,
+      lastname: memberUpdated.lastname,
+      username: memberUpdated.username,
+      email: memberUpdated.email,
+      avatar: memberUpdated.avatar,
+      age: memberUpdated.age,
+      sexe: memberUpdated.sexe,
+      city: memberUpdated.city,
+    };
+
+    res.status(200).json(memberUpdated);
+  },
 };

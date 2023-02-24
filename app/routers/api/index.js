@@ -4,9 +4,10 @@ const apiRouter = new Router();
 
 const { terrainsController, usersController, controllerWrapper } = require('../../controllers');
 
-apiRouter.get('/users/:id', controllerWrapper(usersController.getOneMember));
 apiRouter.post('/users', controllerWrapper(usersController.addOneMember));
+apiRouter.get('/users/:id', controllerWrapper(usersController.getOneMember));
 apiRouter.delete('/users/:id', controllerWrapper(usersController.deleteOneMember));
+apiRouter.patch('/users/:id', controllerWrapper(usersController.updateOneMember));
 
 apiRouter.get('/terrains', controllerWrapper(terrainsController.playgroundList));
 

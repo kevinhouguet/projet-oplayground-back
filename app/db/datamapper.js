@@ -70,6 +70,16 @@ async function deleteOneMember(id) {
   await db.query(query);
 }
 
+async function updateOneMember(userObject, id) {
+  const query = {
+    text: 'SELECT * FROM "update_member"($1,$2);',
+    values: [userObject, id],
+  };
+
+  const result = await db.query(query);
+  return result.rows[0];
+}
+
 module.exports = {
   getAllMember,
   getOneMember,
@@ -77,4 +87,5 @@ module.exports = {
   addOneMember,
   getOneMemberByUsername,
   deleteOneMember,
+  updateOneMember,
 };
