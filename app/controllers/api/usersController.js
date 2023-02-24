@@ -10,10 +10,10 @@ module.exports = {
     const { id: userId } = req.params;
 
     if (userId && isNaN(parseInt(userId))) {
-      return res.json({error: "userId obligatoire"});
+      return res.json({ error: 'userId obligatoire' });
     }
 
-    const members = await datamapper.getOneMember(parseInt(userId));
+    const members = await datamapper.getOneMember(parseInt(userId, 10));
 
     res.json(members);
   },
@@ -23,12 +23,12 @@ module.exports = {
     const searchMmemberEmail = await datamapper.getOneMemberByEmail(users.email);
     const searchMemberUsername = await datamapper.getOneMemberByUsername(users.username);
 
-    if(searchMmemberEmail || searchMemberUsername){
+    if (searchMmemberEmail || searchMemberUsername) {
       throw new Error('user already exist');
-    } 
+    }
 
     const newUser = await datamapper.addOneMember(users);
 
     res.json(newUser);
-  }
+  },
 };
