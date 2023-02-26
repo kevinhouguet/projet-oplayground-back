@@ -12,13 +12,10 @@ async function getAllMember() {
 async function getOneMember(id) {
   const query = {
     text: 'SELECT * FROM "member" WHERE id=$1;',
-    values: [parseInt(id)],
+    values: [id],
   };
 
   const result = await db.query(query);
-  if (result.rows.length) {
-    console.log('pas de data');
-  }
   return result.rows[0];
 }
 
@@ -29,9 +26,6 @@ async function getOneMemberByEmail(email) {
   };
 
   const result = await db.query(query);
-  if (result.rows.length) {
-    console.log('pas de data');
-  }
   return result.rows[0];
 }
 
@@ -42,9 +36,6 @@ async function getOneMemberByUsername(username) {
   };
 
   const result = await db.query(query);
-  if (result.rows.length) {
-    console.log('pas de data');
-  }
   return result.rows[0];
 }
 
@@ -55,9 +46,25 @@ async function addOneMember(memberObject) {
   };
 
   const result = await db.query(query);
-  if (result.rows.length) {
-    console.log('pas de data');
-  }
+  return result.rows[0];
+}
+
+async function deleteOneMember(id) {
+  const query = {
+    text: 'DELETE FROM "member" WHERE id=$1',
+    values: [id],
+  };
+
+  await db.query(query);
+}
+
+async function updateOneMember(userObject, id) {
+  const query = {
+    text: 'SELECT * FROM "update_member"($1,$2);',
+    values: [userObject, id],
+  };
+
+  const result = await db.query(query);
   return result.rows[0];
 }
 
@@ -67,4 +74,6 @@ module.exports = {
   getOneMemberByEmail,
   addOneMember,
   getOneMemberByUsername,
+  deleteOneMember,
+  updateOneMember,
 };

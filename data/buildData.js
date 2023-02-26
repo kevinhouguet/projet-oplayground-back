@@ -103,7 +103,7 @@ const insertData = {
 (async () => {
   const communes = await getCommunes();
 
-  Array.from({ length: 100 }, async () => {
+  Array.from({ length: 10 }, async () => {
     const member = await createData.createRandomMember(communes);
     console.log(member);
     const newMember = await insertData.insertMember(member);
