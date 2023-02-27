@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const routers = require('./routers');
+
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 require('dotenv').config();
 
 const app = express();
