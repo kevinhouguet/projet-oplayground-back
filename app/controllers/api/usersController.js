@@ -16,7 +16,19 @@ module.exports = {
       return res.json({ error: 'userId obligatoire' });
     }
 
-    const members = await datamapper.getOneMember(parseInt(userId, 10));
+    let members = await datamapper.getOneMember(parseInt(userId, 10));
+
+    members = {
+      id: members.id,
+      firstname: members.firstname,
+      lastname: members.lastname,
+      username: members.username,
+      email: members.email,
+      avatar: members.avatar,
+      age: members.age,
+      sexe: members.sexe,
+      city: members.city,
+    };
 
     res.json(members);
   },
