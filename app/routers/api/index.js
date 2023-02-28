@@ -4,16 +4,20 @@ const apiRouter = new Router();
 
 const { authenticationControl } = require('../../controllers/website/authenticationController');
 
+<<<<<<< HEAD
 const {
   terrainsController, usersController, controllerWrapper, eventsController,
 } = require('../../controllers');
+=======
+const { terrainsController, usersController, controllerWrapper } = require('../../controllers');
+>>>>>>> dev
 
 apiRouter.post('/users', controllerWrapper(usersController.addOneMember));
 apiRouter.get('/users/:id', controllerWrapper(usersController.getOneMember));
-apiRouter.delete('/users/:id', controllerWrapper(usersController.deleteOneMember));
-apiRouter.patch('/users/:id', controllerWrapper(usersController.updateOneMember));
+apiRouter.delete('/users/:id', controllerWrapper(authenticationControl), controllerWrapper(usersController.deleteOneMember));
+apiRouter.patch('/users/:id', controllerWrapper(authenticationControl), controllerWrapper(usersController.updateOneMember));
 
-apiRouter.post('/users/signin', controllerWrapper(usersController.compareMember));
+apiRouter.post('/users/signin', controllerWrapper(usersController.connectMember));
 
 apiRouter.get('/terrains', controllerWrapper(terrainsController.playgroundList));
 
