@@ -22,7 +22,7 @@ apiRouter.get('/terrains', controllerWrapper(terrainsController.playgroundList))
 // apiRouter.get('/terrains/:id/events', controllerWrapper(terrainsController.playgroundEvent));
 
 apiRouter.get('/users/:id/events', controllerWrapper(eventsController.eventList));
-apiRouter.post('/users/:id/events', controllerWrapper(eventsController.addOneEvent));
+apiRouter.post('/users/:id/events', authenticationControl, controllerWrapper(eventsController.addOneEvent));
 
 // ROUTE 404
 apiRouter.use((req, res) => {
