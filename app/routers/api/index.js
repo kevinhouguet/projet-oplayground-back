@@ -9,7 +9,7 @@ const {
 } = require('../../controllers');
 
 apiRouter.post('/users', controllerWrapper(usersController.addOneMember));
-apiRouter.get('/users/:id', controllerWrapper(usersController.getOneMember));
+apiRouter.get('/users/:id', controllerWrapper(authenticationControl), controllerWrapper(usersController.getOneMember));
 apiRouter.delete('/users/:id', controllerWrapper(authenticationControl), controllerWrapper(usersController.deleteOneMember));
 apiRouter.patch('/users/:id', controllerWrapper(authenticationControl), controllerWrapper(usersController.updateOneMember));
 

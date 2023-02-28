@@ -38,7 +38,7 @@ module.exports = {
   //   res.json({ message: 'voici les infos sur le terrain demandé' });
   // },
 
-  playgroundEvent: (req, res) => {
-    res.json({ message: 'bienvenue dans mes events' });
-  },
+  // playgroundEvent: (req, res) => {
+  //   res.json({ message: 'bienvenue dans mes events' });
+  // },
 };
