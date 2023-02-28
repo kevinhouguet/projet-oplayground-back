@@ -3,8 +3,7 @@ function controllerWrapper(middleware) {
     try {
       await middleware(req, res, next);
     } catch (err) {
-      console.log('controllerWrapper');
-      res.json({ error: err.message });
+      next(err);
     }
   };
 }

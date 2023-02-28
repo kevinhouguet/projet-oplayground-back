@@ -25,10 +25,8 @@ module.exports = {
           city: playground.fields.commune,
           public: playground.fields.caract159,
         };
-        // console.log(playgroundFormat);
         const isPlaygroundAlreadyInDB = await datamapper.isPlaygroundAlreadyInDB(playgroundFormat);
         if (isPlaygroundAlreadyInDB) {
-          // console.log(isPlaygroundAlreadyInDB);
           const getEvents = await datamapper.getAllEventByPlaygroundId(isPlaygroundAlreadyInDB.id);
           if (getEvents) playgroundFormat.events = getEvents;
         }
