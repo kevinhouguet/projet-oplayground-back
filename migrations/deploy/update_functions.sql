@@ -20,4 +20,18 @@ CREATE FUNCTION "update_member"(o_member json, userId int) RETURNS "member" AS $
 
 $$ LANGUAGE SQL STRICT;
 
+CREATE FUNCTION "update_encounter"(o_encounter json) RETURNS "encounter" AS $$
+
+  UPDATE "encounter"
+  SET 
+        "name"  = o_encounter->>'name',
+        "start_date"  = (o_encounter->>'start_date')::TIMESTAMPTZ,
+        "stop_date"  = (o_encounter->>'stop_date')::TIMESTAMPTZ,
+        "max_player"  = (o_encounter->>'max_player')::int,
+        "updated_at" = now()
+  WHERE "encounter"."id" = (o_encounter->>'id')::int
+  RETURNING *;
+
+$$ LANGUAGE SQL STRICT;
+
 COMMIT;

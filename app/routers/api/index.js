@@ -23,6 +23,7 @@ apiRouter.get('/terrains', controllerWrapper(terrainsController.playgroundList))
 
 apiRouter.get('/users/:id/events', controllerWrapper(eventsController.eventList));
 apiRouter.post('/users/:id/events', authenticationControl, controllerWrapper(eventsController.addOneEvent));
+apiRouter.patch('/users/:id/events', authenticationControl, controllerWrapper(eventsController.updateOneEvent));
 
 // ROUTE 404
 apiRouter.use((req, res) => {
