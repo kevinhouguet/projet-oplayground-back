@@ -1,3 +1,5 @@
+const datamapper = require('../../db/datamapper');
+
 module.exports = {
 
   playgroundList: async (req, res) => {
@@ -6,32 +8,40 @@ module.exports = {
     const httpResponse = await fetch(url);
     const data = await httpResponse.json();
 
-    const renderData = [];
+    const apiDataArray = [];
 
-    // Voir doc api data-es : https://equipements.sports.gouv.fr/explore/dataset/data-es/information/
-    data.records.forEach((element) => {
-      if (element.fields.codepostal.length < 5) element.fields.codepostal = `0${element.fields.codepostal}`;
+    // Pour le Promise.all : https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop
+    await Promise.all(data.records.map(async (playground) => {
+      if (playground.fields.codepostal.length < 5) playground.fields.codepostal = `0${playground.fields.codepostal}`;
       // On ajoute une condition sur le code postal pour retrouver l'exacte commune que l'on veut.
-      if (element.fields.codepostal === codepostal || !codepostal) {
+      if (playground.fields.codepostal === codepostal || !codepostal) {
+        const playgroundFormat = {
+          // Voir doc api data-es : https://equipements.sports.gouv.fr/explore/dataset/data-es/information/
+          name: playground.fields.nomequipement,
+          surface: playground.fields.caract167,
+          type: playground.fields.typequipement,
+          address: playground.fields.adresse,
+          zipCode: playground.fields.codepostal,
+          city: playground.fields.commune,
+          public: playground.fields.caract159,
+        };
+        // console.log(playgroundFormat);
+        const isPlaygroundAlreadyInDB = await datamapper.isPlaygroundAlreadyInDB(playgroundFormat);
+        if (isPlaygroundAlreadyInDB) {
+          // console.log(isPlaygroundAlreadyInDB);
+          const getEvents = await datamapper.getAllEventByPlaygroundId(isPlaygroundAlreadyInDB.id);
+          if (getEvents) playgroundFormat.events = getEvents;
+        }
         // On retire les salles seulement pour les écoles.
-        const onlySchool = element.fields.caract159 === 'Scolaires, universités';
+        const onlySchool = playground.fields.caract159 === 'Scolaires, universités';
 
         if (!onlySchool) {
-          renderData.push({
-            name: element.fields.nominstallation,
-            surface: element.fields.caract167,
-            type: element.fields.typequipement,
-            address: element.fields.adresse,
-            zipCode: element.fields.codepostal,
-            city: element.fields.commune,
-            public: element.fields.caract159,
-          });
+          apiDataArray.push(playgroundFormat);
         }
       }
-    });
+    }));
 
-    // res.json(data.records[0].fields.nominstallation);
-    res.json(renderData);
+    res.json(apiDataArray);
   },
 
   // playgroundById: (req, res) => {
