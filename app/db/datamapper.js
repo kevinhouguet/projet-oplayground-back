@@ -68,6 +68,14 @@ async function updateOneMember(userObject, id) {
   return result.rows[0];
 }
 
+async function getAllEvent() {
+  const query = {
+    text: 'SELECT * FROM "encounter";',
+  };
+  const result = db.query(query);
+  return result.rows;
+}
+
 module.exports = {
   getAllMember,
   getOneMember,
@@ -76,4 +84,5 @@ module.exports = {
   getOneMemberByUsername,
   deleteOneMember,
   updateOneMember,
+  getAllEvent,
 };
