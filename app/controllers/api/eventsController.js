@@ -14,7 +14,7 @@ module.exports = {
 
     // if playground does already exists
 
-    const playgroundExisting = await datamapper.getOnePlayground(terrain);
+    const playgroundExisting = await datamapper.isPlaygroundAlreadyInDB(terrain);
 
     if (!playgroundExisting) {
       // Start with insert playground in db
@@ -31,6 +31,16 @@ module.exports = {
     event.member_id = id;
     event.start_date = startDateFormat.format();
     event.stop_date = startDateFormat.add(2, 'hour').format();
+
+    const isCalendarNotFree = await datamapper.isCalendarNotFree(
+      startDateFormat,
+      event.stop_date,
+      event.playground_id,
+    );
+
+    if (isCalendarNotFree) {
+      throw new Error('calendar full at this date');
+    }
 
     const newEvent = await datamapper.addOneEvent(event);
 
