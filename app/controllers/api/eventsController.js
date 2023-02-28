@@ -41,6 +41,8 @@ module.exports = {
     const { id } = req.params;
     const event = req.body;
 
+    event.id = parseInt(id, 10);
+
     const startDateFormat = dayjs(event.start_date);
     event.start_date = startDateFormat.format();
     event.stop_date = startDateFormat.add(2, 'hour').format();
@@ -58,5 +60,19 @@ module.exports = {
     const updatedEvent = await datamapper.updateOneEvent(event);
 
     res.status(200).json(updatedEvent);
+  },
+
+  async deleteOneEvent(req, res) {
+    const { id } = req.params;
+
+    const isEventInDb = await datamapper.getOneEvent(parseInt(id, 10));
+
+    if (!isEventInDb) {
+      throw new Error('ressource not found');
+    }
+
+    await datamapper.deleteOneEvent(parseInt(id, 10));
+
+    res.status(202).end();
   },
 };

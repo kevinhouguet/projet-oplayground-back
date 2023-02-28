@@ -21,9 +21,11 @@ apiRouter.get('/terrains', controllerWrapper(terrainsController.playgroundList))
 
 // apiRouter.get('/terrains/:id/events', controllerWrapper(terrainsController.playgroundEvent));
 
-apiRouter.get('/users/:id/events', controllerWrapper(eventsController.eventList));
+apiRouter.get('/users/:id/events', authenticationControl, controllerWrapper(eventsController.eventList));
+
 apiRouter.post('/users/:id/events', authenticationControl, controllerWrapper(eventsController.addOneEvent));
-apiRouter.patch('/users/:id/events', authenticationControl, controllerWrapper(eventsController.updateOneEvent));
+apiRouter.patch('/events/:id', authenticationControl, controllerWrapper(eventsController.updateOneEvent));
+apiRouter.delete('/events/:id', authenticationControl, controllerWrapper(eventsController.deleteOneEvent));
 
 // ROUTE 404
 apiRouter.use((req, res) => {

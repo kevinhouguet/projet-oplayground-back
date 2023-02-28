@@ -138,6 +138,26 @@ async function getOnePlayground(playgroundObject) {
   return result.rows[0];
 }
 
+async function getOneEvent(id) {
+  const query = {
+    text: ' SELECT * FROM "encounter" WHERE id=$1',
+    values: [id],
+  };
+
+  const result = await db.query(query);
+  return result.rows[0];
+}
+
+async function deleteOneEvent(id) {
+  const query = {
+    text: ' DELETE FROM "encounter" WHERE id=$1',
+    values: [id],
+  };
+
+  const result = await db.query(query);
+  return result.rows[0];
+}
+
 module.exports = {
   getAllMember,
   getOneMember,
@@ -151,4 +171,6 @@ module.exports = {
   addOneEvent,
   isCalendarNotFree,
   updateOneEvent,
+  getOneEvent,
+  deleteOneEvent,
 };
