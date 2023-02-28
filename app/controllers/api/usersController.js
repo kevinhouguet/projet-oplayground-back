@@ -115,14 +115,7 @@ module.exports = {
     if (match) {
       searchMemberEmail = {
         id: searchMemberEmail.id,
-        firstname: searchMemberEmail.firstname,
-        lastname: searchMemberEmail.lastname,
         username: searchMemberEmail.username,
-        email: searchMemberEmail.email,
-        avatar: searchMemberEmail.avatar,
-        age: searchMemberEmail.age,
-        sexe: searchMemberEmail.sexe,
-        city: searchMemberEmail.city,
       };
       // JWT : https://www.youtube.com/watch?v=mbsmsi7l3r4&t=804s
       const accessToken = jwt.sign(searchMemberEmail, process.env.ACCESS_TOKEN_SECRET);

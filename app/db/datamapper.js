@@ -173,4 +173,5 @@ module.exports = {
   updateOneEvent,
   getOneEvent,
   deleteOneEvent,
+  getOnePlayground,
 };
