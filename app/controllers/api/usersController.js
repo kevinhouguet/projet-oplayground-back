@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const datamapper = require('../../db/datamapper');
 
 const saltRounds = 10;
@@ -104,29 +105,18 @@ module.exports = {
     res.status(200).json(memberUpdated);
   },
 
-  async compareMember(req, res) {
+  async connectMember(req, res) {
     const user = req.body;
 
-    let searchMemberEmail = await datamapper.getOneMemberByEmail(user.email);
+    const searchMemberEmail = await datamapper.getOneMemberByEmail(user.email);
 
     const match = await bcrypt.compare(user.password, searchMemberEmail.password);
 
     if (match) {
-      searchMemberEmail = {
-        id: searchMemberEmail.id,
-        email: searchMemberEmail.email,
-        username: searchMemberEmail.username,
-        firstname: searchMemberEmail.firstname,
-        lastname: searchMemberEmail.lastname,
-        avatar: searchMemberEmail.avatar,
-        age: searchMemberEmail.age,
-        sexe: searchMemberEmail.sexe,
-        city: searchMemberEmail.city,
-        created_at: searchMemberEmail.created_at,
-        updated_at: searchMemberEmail.updated_at,
-      };
-
-      res.status(200).json(searchMemberEmail);
+      // JWT : https://www.youtube.com/watch?v=mbsmsi7l3r4&t=804s
+      const accessToken = jwt.sign(searchMemberEmail.username, process.env.ACCESS_TOKEN_SECRET);
+      console.log(searchMemberEmail.username);
+      res.status(200).json({ accessToken });
     } else {
       throw new Error('user mail or password incorrect');
     }
