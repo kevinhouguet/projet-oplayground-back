@@ -96,6 +96,68 @@ async function addOneEvent(event) {
   return result.rows[0];
 }
 
+async function isCalendarNotFree(startDate, stopDate, playgroundId) {
+  const query = {
+    text: ` SELECT * FROM "encounter" 
+            WHERE "playground_id"=$1 AND "start_date" BETWEEN $2 AND $3;`,
+    values: [playgroundId, startDate, stopDate],
+  };
+
+  const result = await db.query(query);
+  return result.rows[0];
+}
+
+async function updateOneEvent(eventObject) {
+  const query = {
+    text: 'SELECT * FROM "update_encounter"($1);',
+    values: [eventObject],
+  };
+
+  const result = await db.query(query);
+  return result.rows[0];
+}
+
+async function getOnePlayground(playgroundObject) {
+  const query = {
+    text: ` SELECT * FROM "playground"
+            WHERE "name" = $1
+            AND "surface" = $2
+            AND "address" = $3
+            AND "zip_code" = $4
+            AND "city" = $5;`,
+    values: [
+      playgroundObject.name,
+      playgroundObject.surface,
+      playgroundObject.address,
+      playgroundObject.zip_code,
+      playgroundObject.city,
+    ],
+  };
+
+  const result = await db.query(query);
+  return result.rows[0];
+}
+
+async function getOneEvent(id) {
+  const query = {
+    text: ' SELECT * FROM "encounter" WHERE id=$1',
+    values: [id],
+  };
+
+  const result = await db.query(query);
+  return result.rows[0];
+}
+
+async function deleteOneEvent(id) {
+  const query = {
+    text: ' DELETE FROM "encounter" WHERE id=$1',
+    values: [id],
+  };
+
+  const result = await db.query(query);
+  return result.rows[0];
+}
+
 module.exports = {
   getAllMember,
   getOneMember,
@@ -107,4 +169,8 @@ module.exports = {
   getAllEvent,
   addOnePlayground,
   addOneEvent,
+  isCalendarNotFree,
+  updateOneEvent,
+  getOneEvent,
+  deleteOneEvent,
 };
