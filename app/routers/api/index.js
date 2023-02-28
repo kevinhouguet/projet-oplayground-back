@@ -4,13 +4,9 @@ const apiRouter = new Router();
 
 const { authenticationControl } = require('../../controllers/website/authenticationController');
 
-<<<<<<< HEAD
 const {
   terrainsController, usersController, controllerWrapper, eventsController,
 } = require('../../controllers');
-=======
-const { terrainsController, usersController, controllerWrapper } = require('../../controllers');
->>>>>>> dev
 
 apiRouter.post('/users', controllerWrapper(usersController.addOneMember));
 apiRouter.get('/users/:id', controllerWrapper(usersController.getOneMember));
