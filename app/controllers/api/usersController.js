@@ -113,7 +113,9 @@ module.exports = {
     const match = await bcrypt.compare(user.password, searchMemberEmail.password);
 
     if (match) {
+      // JWT : https://www.youtube.com/watch?v=mbsmsi7l3r4&t=804s
       const accessToken = jwt.sign(searchMemberEmail.username, process.env.ACCESS_TOKEN_SECRET);
+      console.log(searchMemberEmail.username);
       res.status(200).json({ accessToken });
     } else {
       throw new Error('user mail or password incorrect');
