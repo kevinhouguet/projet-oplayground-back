@@ -10,6 +10,15 @@ const {
 const apiErrorController = require('../../controllers/api/apiErrorController');
 const NotFoundError = require('../../errors/NotFound');
 
+/**
+ * @swagger
+ * /users:
+ *  post:
+ *    description: test
+ *    responses:
+ *      200:
+ *        description: Returns test
+ */
 apiRouter.post('/users', controllerErrorHandler(usersController.addOneMember));
 apiRouter.get('/users/:userId(\\d+)', controllerErrorHandler(authenticationControl), controllerErrorHandler(usersController.getOneMember));
 apiRouter.delete('/users/:userId', controllerErrorHandler(authenticationControl), controllerErrorHandler(usersController.deleteOneMember));
