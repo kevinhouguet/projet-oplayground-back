@@ -43,7 +43,7 @@ CREATE FUNCTION "insert_playground"(playground JSON) RETURNS playground AS $$
 	VALUES (
 	        playground ->> 'name',
 	        playground ->> 'address',
-	        playground ->> 'zip_code',
+	        playground ->> 'zipCode',
 	        playground ->> 'city',
 	        playground ->> 'surface',
 			playground ->> 'picture'

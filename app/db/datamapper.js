@@ -77,6 +77,15 @@ async function getAllEvent(userId) {
   return result.rows;
 }
 
+async function getAllEventByPlaygroundId(playground_id) {
+  const query = {
+    text: 'SELECT * FROM "encounter" WHERE "playground_id"=$1;',
+    values: [playground_id],
+  };
+  const result = await db.query(query);
+  return result.rows;
+}
+
 async function addOnePlayground(playground) {
   const query = {
     text: 'SELECT * FROM "insert_playground"($1);',
@@ -117,7 +126,7 @@ async function updateOneEvent(eventObject) {
   return result.rows[0];
 }
 
-async function getOnePlayground(playgroundObject) {
+async function isPlaygroundAlreadyInDB(playgroundObject) {
   const query = {
     text: ` SELECT * FROM "playground"
             WHERE "name" = $1
@@ -129,12 +138,13 @@ async function getOnePlayground(playgroundObject) {
       playgroundObject.name,
       playgroundObject.surface,
       playgroundObject.address,
-      playgroundObject.zip_code,
+      playgroundObject.zipCode,
       playgroundObject.city,
     ],
   };
 
   const result = await db.query(query);
+  // console.log(result.rows[0]);
   return result.rows[0];
 }
 
@@ -173,5 +183,6 @@ module.exports = {
   updateOneEvent,
   getOneEvent,
   deleteOneEvent,
-  getOnePlayground,
+  isPlaygroundAlreadyInDB,
+  getAllEventByPlaygroundId,
 };

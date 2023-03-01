@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const ApiError = require('../../errors/ApiError');
 
 module.exports = {
   authenticationControl(req, res, next) {
@@ -8,7 +9,7 @@ module.exports = {
     const token = authHeader && authHeader.split(' ')[1];
     if (token == null) {
       // res.sendStatus(401);
-      throw new Error('please add a token');
+      throw new ApiError('Access Token Null', '', 'Please add a token');
     }
     console.log(token);
 
@@ -16,7 +17,7 @@ module.exports = {
       if (err) {
         // res.sendStatus(403);
         console.log(process.env.ACCESS_TOKEN_SECRET);
-        throw new Error('forbidden');
+        throw new ApiError('Forbidden Request', 403, 'Forbidden');
       }
       req.user = user;
     });
