@@ -10,10 +10,12 @@ module.exports = {
 
     // Voir doc api data-es : https://equipements.sports.gouv.fr/explore/dataset/data-es/information/
     data.records.forEach((element) => {
+      if (element.fields.codepostal.length < 5) element.fields.codepostal = `0${element.fields.codepostal}`;
       // On ajoute une condition sur le code postal pour retrouver l'exacte commune que l'on veut.
       if (element.fields.codepostal === codepostal || !codepostal) {
         // On retire les salles seulement pour les écoles.
         const onlySchool = element.fields.caract159 === 'Scolaires, universités';
+
         if (!onlySchool) {
           renderData.push({
             name: element.fields.nominstallation,
@@ -36,7 +38,7 @@ module.exports = {
   //   res.json({ message: 'voici les infos sur le terrain demandé' });
   // },
 
-  playgroundEvent: (req, res) => {
-    res.json({ message: 'bienvenue dans mes events' });
-  },
+  // playgroundEvent: (req, res) => {
+  //   res.json({ message: 'bienvenue dans mes events' });
+  // },
 };

@@ -108,14 +108,17 @@ module.exports = {
   async connectMember(req, res) {
     const user = req.body;
 
-    const searchMemberEmail = await datamapper.getOneMemberByEmail(user.email);
+    let searchMemberEmail = await datamapper.getOneMemberByEmail(user.email);
 
     const match = await bcrypt.compare(user.password, searchMemberEmail.password);
 
     if (match) {
+      searchMemberEmail = {
+        id: searchMemberEmail.id,
+        username: searchMemberEmail.username,
+      };
       // JWT : https://www.youtube.com/watch?v=mbsmsi7l3r4&t=804s
-      const accessToken = jwt.sign(searchMemberEmail.username, process.env.ACCESS_TOKEN_SECRET);
-      console.log(searchMemberEmail.username);
+      const accessToken = jwt.sign(searchMemberEmail, process.env.ACCESS_TOKEN_SECRET);
       res.status(200).json({ accessToken });
     } else {
       throw new Error('user mail or password incorrect');

@@ -2,6 +2,6 @@
 
 BEGIN;
 
-DROP FUNCTION "update_member";
+DROP FUNCTION "update_member", "update_encounter";
 
 COMMIT;
