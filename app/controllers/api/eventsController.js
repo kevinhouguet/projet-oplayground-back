@@ -1,20 +1,23 @@
 const dayjs = require('dayjs');
 const datamapper = require('../../db/datamapper');
 
+const ApiError = require('../../errors/ApiError');
+const NotFoundError = require('../../errors/NotFound');
+
 module.exports = {
   async eventList(req, res) {
-    const { id } = req.params;
-    const events = await datamapper.getAllEvent(parseInt(id, 10));
+    const { eventId } = req.params;
+    const events = await datamapper.getAllEvent(parseInt(eventId, 10));
 
     res.status(200).json(events);
   },
   async addOneEvent(req, res) {
-    const { id } = req.params;
+    const { userId } = req.params;
     const { terrain, event } = req.body;
 
     // if playground does already exists
 
-    const playgroundExisting = await datamapper.getOnePlayground(terrain);
+    const playgroundExisting = await datamapper.isPlaygroundAlreadyInDB(terrain);
 
     if (!playgroundExisting) {
       // Start with insert playground in db
@@ -28,9 +31,19 @@ module.exports = {
 
     const startDateFormat = dayjs(event.start_date);
 
-    event.member_id = id;
+    event.member_id = userId;
     event.start_date = startDateFormat.format();
     event.stop_date = startDateFormat.add(2, 'hour').format();
+
+    const isCalendarNotFree = await datamapper.isCalendarNotFree(
+      startDateFormat,
+      event.stop_date,
+      event.playground_id,
+    );
+
+    if (isCalendarNotFree) {
+      throw new ApiError('Not Free', '', 'Schedule is full');
+    }
 
     const newEvent = await datamapper.addOneEvent(event);
 
@@ -38,10 +51,16 @@ module.exports = {
   },
 
   async updateOneEvent(req, res) {
-    const { id } = req.params;
+    const { eventId } = req.params;
     const event = req.body;
 
-    event.id = parseInt(id, 10);
+    const isEventInDb = await datamapper.getOneEvent(parseInt(eventId, 10));
+
+    if (!isEventInDb) {
+      throw new NotFoundError();
+    }
+
+    event.id = parseInt(eventId, 10);
 
     const startDateFormat = dayjs(event.start_date);
     event.start_date = startDateFormat.format();
@@ -54,7 +73,7 @@ module.exports = {
     );
 
     if (isCalendarNotFree) {
-      throw new Error('calendar full at this date');
+      throw new ApiError('Not Free', '', 'Schedule is full');
     }
 
     const updatedEvent = await datamapper.updateOneEvent(event);
@@ -63,15 +82,15 @@ module.exports = {
   },
 
   async deleteOneEvent(req, res) {
-    const { id } = req.params;
+    const { eventId } = req.params;
 
-    const isEventInDb = await datamapper.getOneEvent(parseInt(id, 10));
+    const isEventInDb = await datamapper.getOneEvent(parseInt(eventId, 10));
 
     if (!isEventInDb) {
-      throw new Error('ressource not found');
+      throw new NotFoundError();
     }
 
-    await datamapper.deleteOneEvent(parseInt(id, 10));
+    await datamapper.deleteOneEvent(parseInt(eventId, 10));
 
     res.status(202).end();
   },

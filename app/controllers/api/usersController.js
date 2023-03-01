@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const datamapper = require('../../db/datamapper');
+const ApiError = require('../../errors/ApiError');
+const NotFoundError = require('../../errors/NotFound');
 
 const saltRounds = 10;
 
@@ -11,13 +13,17 @@ module.exports = {
   },
 
   async getOneMember(req, res) {
-    const { id: userId } = req.params;
+    const { userId } = req.params;
 
-    if (userId && isNaN(parseInt(userId, 10))) {
-      return res.json({ error: 'userId obligatoire' });
+    if (!userId) {
+      throw new ApiError('Data Not Valid', 400, 'At least one mandatory data in error');
     }
 
     let members = await datamapper.getOneMember(parseInt(userId, 10));
+
+    if (!members) {
+      throw new NotFoundError();
+    }
 
     members = {
       id: members.id,
@@ -40,7 +46,7 @@ module.exports = {
     const searchMemberUsername = await datamapper.getOneMemberByUsername(user.username);
 
     if (searchMemberEmail || searchMemberUsername) {
-      throw new Error('user already exist');
+      throw new ApiError('Already Exist', 400, 'User already exist');
     }
 
     const hashedPassword = await bcrypt.hash(user.password, saltRounds);
@@ -64,10 +70,10 @@ module.exports = {
     res.status(201).json(newUser);
   },
   async deleteOneMember(req, res) {
-    const { id: userId } = req.params;
+    const { userId } = req.params;
 
     if (userId && isNaN(parseInt(userId, 10))) {
-      throw new Error('userId obligatoire');
+      throw new ApiError('Data Not Valid', 400, 'At least one mandatory data in error');
     }
 
     await datamapper.getOneMember(parseInt(userId, 10));
@@ -77,11 +83,11 @@ module.exports = {
     res.status(202).json({ message: 'user deleted successfully' });
   },
   async updateOneMember(req, res) {
-    const { id: userId } = req.params;
+    const { userId } = req.params;
     const user = req.body;
 
     if (userId && isNaN(parseInt(userId, 10))) {
-      throw new Error('userId obligatoire');
+      throw new ApiError('Data Not Valid', 400, 'At least one mandatory data in error');
     }
 
     const hashedPassword = await bcrypt.hash(user.password, saltRounds);
@@ -121,7 +127,7 @@ module.exports = {
       const accessToken = jwt.sign(searchMemberEmail, process.env.ACCESS_TOKEN_SECRET);
       res.status(200).json({ accessToken });
     } else {
-      throw new Error('user mail or password incorrect');
+      throw new ApiError('Data Not Valid', 400, 'At least one mandatory data in error');
     }
   },
 };
