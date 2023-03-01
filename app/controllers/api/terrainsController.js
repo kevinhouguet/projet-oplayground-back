@@ -27,6 +27,7 @@ module.exports = {
         };
         const isPlaygroundAlreadyInDB = await datamapper.isPlaygroundAlreadyInDB(playgroundFormat);
         if (isPlaygroundAlreadyInDB) {
+          playgroundFormat.playgroundId = isPlaygroundAlreadyInDB.id;
           const getEvents = await datamapper.getAllEventByPlaygroundId(isPlaygroundAlreadyInDB.id);
           if (getEvents) playgroundFormat.events = getEvents;
         }
