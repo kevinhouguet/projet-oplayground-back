@@ -42,6 +42,11 @@ module.exports = {
 
   async addOneMember(req, res) {
     const user = req.body;
+
+    if (!user.email || !user.password) {
+      throw new ApiError('Data Not Valid', 400, 'At least one mandatory data is not transmit');
+    }
+
     const searchMemberEmail = await datamapper.getOneMemberByEmail(user.email);
     const searchMemberUsername = await datamapper.getOneMemberByUsername(user.username);
 
@@ -115,6 +120,10 @@ module.exports = {
     const user = req.body;
 
     let searchMemberEmail = await datamapper.getOneMemberByEmail(user.email);
+
+    if (!searchMemberEmail) {
+      throw new NotFoundError();
+    }
 
     const match = await bcrypt.compare(user.password, searchMemberEmail.password);
 
