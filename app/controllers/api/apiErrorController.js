@@ -8,6 +8,10 @@ module.exports = {
       message = 'One or all data already exists';
     }
 
+    if (err.code === '23502') {
+      message = 'One madatory data not here';
+    }
+
     if (err.code === '23503') {
       message = 'This data is bind with other datas. Thanks to delete other datas before delete this one';
     }
