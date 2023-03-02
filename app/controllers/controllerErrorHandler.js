@@ -3,6 +3,7 @@ function controllerWrapper(middleware) {
     try {
       await middleware(req, res, next);
     } catch (err) {
+      console.log(err);
       next(err);
     }
   };
