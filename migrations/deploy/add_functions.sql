@@ -33,6 +33,7 @@ $$ LANGUAGE SQL STRICT;
 CREATE FUNCTION "insert_playground"(playground JSON) RETURNS playground AS $$ 
 	INSERT INTO
 	    "playground" (
+					"id",
 	        "name",
 	        "address",
 	        "zip_code",
@@ -41,9 +42,10 @@ CREATE FUNCTION "insert_playground"(playground JSON) RETURNS playground AS $$
 	        "picture"
 	    )
 	VALUES (
+					playground ->> 'playgroundId',
 	        playground ->> 'name',
 	        playground ->> 'address',
-	        playground ->> 'zip_code',
+	        playground ->> 'zipCode',
 	        playground ->> 'city',
 	        playground ->> 'surface',
 			playground ->> 'picture'
@@ -71,7 +73,7 @@ CREATE FUNCTION "insert_encounter"(encounter JSON) RETURNS encounter AS $$
 	        (encounter ->> 'start_date')::TIMESTAMPTZ,
 	        (encounter ->> 'stop_date')::TIMESTAMPTZ,
 	        (encounter ->> 'max_player')::INT,
-	        (encounter ->> 'playground_id')::INT
+	        encounter ->> 'playground_id'
 	    )
 	RETURNING *;
 $$ LANGUAGE SQL; 
