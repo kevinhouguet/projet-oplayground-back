@@ -4,3 +4,4 @@
 init 2023-02-20T14:07:18Z 'Kevin <'k.houguet@gmail.com'> # init db
 add_functions 2023-02-22T10:23:29Z 'Kevin <'k.houguet@gmail.com'> # add function to insert data
 update_functions 2023-02-24T12:13:38Z 'Kevin <'k.houguet@gmail.com'> # add update_functions
+modification_for_update_member 2023-03-02T15:03:15Z 'Kevin <'k.houguet@gmail.com'> # change update member function
