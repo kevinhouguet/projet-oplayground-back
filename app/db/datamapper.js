@@ -126,7 +126,20 @@ async function updateOneEvent(eventObject) {
   return result.rows[0];
 }
 
-async function isPlaygroundAlreadyInDB(playgroundObject) {
+async function isPlaygroundAlreadyInDB(playgroundId) {
+  const query = {
+    text: ` SELECT * FROM "playground"
+            WHERE "id"=$1;`,
+    values: [
+      playgroundId,
+    ],
+  };
+  const result = await db.query(query);
+  // console.log(result.rows[0]);
+  return result.rows[0];
+}
+
+async function isPlaygroundAlreadyInDBByPlaygroundObj(playgroundObject) {
   const query = {
     text: ` SELECT * FROM "playground"
             WHERE "name" = $1
@@ -142,7 +155,6 @@ async function isPlaygroundAlreadyInDB(playgroundObject) {
       playgroundObject.city,
     ],
   };
-
   const result = await db.query(query);
   // console.log(result.rows[0]);
   return result.rows[0];
