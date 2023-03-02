@@ -38,6 +38,7 @@ module.exports = {
       startDateFormat,
       event.stop_date,
       event.playground_id,
+      event.id,
     );
 
     if (isCalendarNotFree) {
@@ -61,7 +62,7 @@ module.exports = {
 
     event.id = parseInt(eventId, 10);
 
-    const startDateFormat = dayjs(event.start_date);
+    const startDateFormat = dayjs(event.start_date || isEventInDb.start_date);
     event.start_date = startDateFormat.format();
     event.stop_date = startDateFormat.add(2, 'hour').format();
 
@@ -75,7 +76,9 @@ module.exports = {
       throw new ApiError('Not Free', '', 'Schedule is full');
     }
 
-    const updatedEvent = await datamapper.updateOneEvent(event);
+    const eventFilled = { event, ...isEventInDb };
+
+    const updatedEvent = await datamapper.updateOneEvent(eventFilled);
 
     res.status(200).json(updatedEvent);
   },
