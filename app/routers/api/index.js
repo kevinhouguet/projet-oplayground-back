@@ -9,6 +9,9 @@ const {
 } = require('../../controllers');
 const apiErrorController = require('../../controllers/api/apiErrorController');
 const NotFoundError = require('../../errors/NotFound');
+const validate = require('../../validation/validator');
+const { post: userPostSchema, patch: userPatchSchema, signin: userSigninSchema } = require('../../validation/schemas/member.schema');
+const { post: eventPostSchema, patch: eventPatchSchema } = require('../../validation/schemas/events.schema');
 
 /**
  * @swagger
@@ -42,7 +45,7 @@ const NotFoundError = require('../../errors/NotFound');
  *        404:
  *          description: Returns a not found error
  */
-apiRouter.post('/users', controllerErrorHandler(usersController.addOneMember));
+apiRouter.post('/users', validate(userPostSchema, 'body'), controllerErrorHandler(usersController.addOneMember));
 /**
  * @swagger
  *  /users/{userId}:
@@ -125,7 +128,7 @@ apiRouter.delete('/users/:userId', controllerErrorHandler(authenticationControl)
  *    security:
  *      - Authorization: []
  */
-apiRouter.patch('/users/:userId', controllerErrorHandler(authenticationControl), controllerErrorHandler(usersController.updateOneMember));
+apiRouter.patch('/users/:userId', validate(userPatchSchema, 'body'), controllerErrorHandler(authenticationControl), controllerErrorHandler(usersController.updateOneMember));
 /**
  * @swagger
  * /users/signin:
@@ -152,7 +155,7 @@ apiRouter.patch('/users/:userId', controllerErrorHandler(authenticationControl),
  *      404:
  *        description: Returns a not found error
  */
-apiRouter.post('/users/signin', controllerErrorHandler(usersController.connectMember));
+apiRouter.post('/users/signin', validate(userSigninSchema, 'body'), controllerErrorHandler(usersController.connectMember));
 apiRouter.get('/terrains', controllerErrorHandler(terrainsController.playgroundList));
 
 apiRouter.get('/terrains/:playgroundId', controllerErrorHandler(terrainsController.playgroundById));
@@ -187,7 +190,7 @@ apiRouter.get('/terrains/:playgroundId', controllerErrorHandler(terrainsControll
  */
 apiRouter.get('/users/:userId/events', authenticationControl, controllerErrorHandler(eventsController.eventList));
 
-apiRouter.post('/users/:userId/events', authenticationControl, controllerErrorHandler(eventsController.addOneEvent));
+apiRouter.post('/users/:userId/events', validate(eventPostSchema, 'body'), authenticationControl, controllerErrorHandler(eventsController.addOneEvent));
 /**
  * @swagger
  * /events/{eventId}:
@@ -218,7 +221,7 @@ apiRouter.post('/users/:userId/events', authenticationControl, controllerErrorHa
  *    security:
  *      - Authorization: []
  */
-apiRouter.patch('/events/:eventId', authenticationControl, controllerErrorHandler(eventsController.updateOneEvent));
+apiRouter.patch('/events/:eventId', validate(eventPatchSchema, 'body'), authenticationControl, controllerErrorHandler(eventsController.updateOneEvent));
 apiRouter.delete('/events/:eventId', authenticationControl, controllerErrorHandler(eventsController.deleteOneEvent));
 
 // ROUTE 404
