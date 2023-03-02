@@ -14,6 +14,9 @@ module.exports = {
 
   async getOneMember(req, res) {
     const { userId } = req.params;
+    const { id: tokenUserId } = req.user;
+
+    if (parseInt(userId, 10) !== tokenUserId) throw new ApiError('Forbidden', 403, 'Not authorize');
 
     if (!userId) {
       throw new ApiError('Data Not Valid', 400, 'At least one mandatory data in error');
@@ -76,6 +79,9 @@ module.exports = {
   },
   async deleteOneMember(req, res) {
     const { userId } = req.params;
+    const { id: tokenUserId } = req.user;
+
+    if (parseInt(userId, 10) !== tokenUserId) throw new ApiError('Forbidden', 403, 'Not authorize');
 
     if (userId && isNaN(parseInt(userId, 10))) {
       throw new ApiError('Data Not Valid', 400, 'At least one mandatory data in error');
@@ -90,6 +96,9 @@ module.exports = {
   async updateOneMember(req, res) {
     const { userId } = req.params;
     const user = req.body;
+    const { id: tokenUserId } = req.user;
+
+    if (parseInt(userId, 10) !== tokenUserId) throw new ApiError('Forbidden', 403, 'Not authorize');
 
     if (userId && isNaN(parseInt(userId, 10))) {
       throw new ApiError('Data Not Valid', 400, 'At least one mandatory data in error');
