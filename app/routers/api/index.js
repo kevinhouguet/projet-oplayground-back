@@ -43,6 +43,36 @@ const NotFoundError = require('../../errors/NotFound');
  *        description: Returns a not found error
  */
 apiRouter.post('/users', controllerErrorHandler(usersController.addOneMember));
+/**
+ * @swagger
+ * /users/:userId:
+ *   get:
+ *     tags:
+ *       - users/:userId
+ *     summary: Find user by ID
+ *     description: Returns a single user
+ *     operationId: getUserById
+ *     parameters:
+ *       - name: userID
+ *         in: path
+ *         description: ID of user to return
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           format: int64
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *       '400':
+ *         description: Invalid ID supplied
+ *       '404':
+ *         description: user not found
+ *     security:
+ *       - api_key: []
+ *       - petstore_auth:
+ *          - write:users
+ *          - read:users
+ */
 apiRouter.get('/users/:userId', controllerErrorHandler(authenticationControl), controllerErrorHandler(usersController.getOneMember));
 /**
  * @swagger
@@ -68,6 +98,39 @@ apiRouter.get('/users/:userId', controllerErrorHandler(authenticationControl), c
  *        description: Returns a not found error
  */
 apiRouter.delete('/users/:userId', controllerErrorHandler(authenticationControl), controllerErrorHandler(usersController.deleteOneMember));
+/**
+ * @swagger
+ * /users/:userId:
+ *   patch:
+ *     tags:
+ *       - user
+ *     summary: Update an existing user
+ *     description: Update an existing user by Id
+ *     operationId: UpdateOneMember
+ *     requestBody:
+ *          description: Update an existent user in the store
+ *     content:
+ *            application/json:
+ *              schema:
+ *                  $ref: '#/app/schemas/Pet'
+ *     responses:
+ *          '200':
+ *           description: Successful operation
+ *           content:
+ *              application/json:
+ *            schema:
+ *            $ref: '#/components/schemas/Pet'
+ *          '400':
+ *            description: Invalid ID supplied
+ *          '404':
+ *            description: Pet not found
+ *          '405':
+ *            description: Validation exception
+ *            security:
+ *              - petstore_auth:
+ *              - write:pets
+ *              - read:pets
+*/
 apiRouter.patch('/users/:userId', controllerErrorHandler(authenticationControl), controllerErrorHandler(usersController.updateOneMember));
 /**
  * @swagger
