@@ -12,66 +12,63 @@ const NotFoundError = require('../../errors/NotFound');
 
 /**
  * @swagger
- * /users:
- *  post:
- *    tags:
- *      - Users
- *    summary: Create a user
- *    description: Create a user
- *    requestBody:
- *      description: Create a new user
- *      content:
- *        application/json:
- *          schema:
- *            properties:
- *              email:
- *                type: string
- *              username:
- *                type: string
- *              password:
- *                type: string
- *    responses:
- *      201:
- *        description: Returns an object user
+ *  /users:
+ *    post:
+ *      tags:
+ *        - Users
+ *      summary: Create a user
+ *      description: Create a user
+ *      requestBody:
+ *        description: Create a new user
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/User'
- *      400:
- *        description: Returns a JSON with error message
- *      404:
- *        description: Returns a not found error
+ *              properties:
+ *                email:
+ *                  type: string
+ *                username:
+ *                  type: string
+ *                password:
+ *                  type: string
+ *      responses:
+ *        201:
+ *          description: Returns an object user
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/User'
+ *        400:
+ *          description: Returns a JSON with error message
+ *        404:
+ *          description: Returns a not found error
  */
 apiRouter.post('/users', controllerErrorHandler(usersController.addOneMember));
 /**
  * @swagger
- * /users/:userId:
- *   get:
- *     tags:
- *       - users/:userId
- *     summary: Find user by ID
- *     description: Returns a single user
- *     operationId: getUserById
- *     parameters:
- *       - name: userID
- *         in: path
- *         description: ID of user to return
- *         required: true
- *         schema:
- *           type: integer
- *           format: int64
- *     responses:
- *       '200':
- *         description: successful operation
- *       '400':
- *         description: Invalid ID supplied
- *       '404':
- *         description: user not found
- *     security:
- *       - api_key: []
- *       - petstore_auth:
- *          - write:users
- *          - read:users
+ *  /users/{userId}:
+ *    get:
+ *      tags:
+ *        - Users
+ *      summary: Find user by ID
+ *      description: Returns a single user
+ *      operationId: getUserById
+ *      parameters:
+ *        - name: userID
+ *          in: path
+ *          description: ID of user to return
+ *          required: true
+ *          schema:
+ *            type: integer
+ *            format: int64
+ *      responses:
+ *        200:
+ *          description: successful operation
+ *        400:
+ *          description: Invalid ID supplied
+ *        404:
+ *          description: user not found
+ *      security:
+ *       - Authorization: []
  */
 apiRouter.get('/users/:userId', controllerErrorHandler(authenticationControl), controllerErrorHandler(usersController.getOneMember));
 /**
@@ -100,37 +97,34 @@ apiRouter.get('/users/:userId', controllerErrorHandler(authenticationControl), c
 apiRouter.delete('/users/:userId', controllerErrorHandler(authenticationControl), controllerErrorHandler(usersController.deleteOneMember));
 /**
  * @swagger
- * /users/:userId:
- *   patch:
- *     tags:
- *       - user
- *     summary: Update an existing user
- *     description: Update an existing user by Id
- *     operationId: UpdateOneMember
- *     requestBody:
- *          description: Update an existent user in the store
- *     content:
- *            application/json:
+ * /users/{userId}:
+ *  patch:
+ *    tags:
+ *      - Users
+ *    summary: Update an user
+ *    description: Update an user
+ *    parameters:
+ *       - name: userId
+ *         in: path
+ *         description: ID of user
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           format: int64
+ *    responses:
+ *      202:
+ *        description: Returns an User object
+ *        content:
+ *          application/json:
  *              schema:
- *                  $ref: '#/app/schemas/Pet'
- *     responses:
- *          '200':
- *           description: Successful operation
- *           content:
- *              application/json:
- *            schema:
- *            $ref: '#/components/schemas/Pet'
- *          '400':
- *            description: Invalid ID supplied
- *          '404':
- *            description: Pet not found
- *          '405':
- *            description: Validation exception
- *            security:
- *              - petstore_auth:
- *              - write:pets
- *              - read:pets
-*/
+ *                $ref: '#/components/schemas/User'
+ *      400:
+ *        description: Returns a JSON with error message
+ *      404:
+ *        description: Returns a not found error
+ *    security:
+ *      - Authorization: []
+ */
 apiRouter.patch('/users/:userId', controllerErrorHandler(authenticationControl), controllerErrorHandler(usersController.updateOneMember));
 /**
  * @swagger

@@ -25,15 +25,6 @@ module.exports = {
           public: playground.fields.caract159,
           playgroundId: playground.recordid,
         };
-        const isPlaygroundAlreadyInDB = await datamapper.isPlaygroundAlreadyInDB(playgroundFormat);
-        if (isPlaygroundAlreadyInDB) {
-          playgroundFormat.playgroundId = isPlaygroundAlreadyInDB.id;
-          const getEvents = await datamapper.getAllEventByPlaygroundId(isPlaygroundAlreadyInDB.id);
-          if (getEvents) playgroundFormat.events = getEvents;
-        }
-        // On retire les salles seulement pour les écoles.
-        const onlySchool = playground.fields.caract159 === 'Scolaires, universités';
-
         // On retire les salles seulement pour les écoles.
         const onlySchool = playground.fields.caract159 === 'Scolaires, universités';
 
@@ -76,11 +67,10 @@ module.exports = {
       // On retire les salles seulement pour les écoles.
       const onlySchool = playground.fields.caract159 === 'Scolaires, universités';
 
-        if (!onlySchool) {
-          apiDataArray.push(playgroundFormat);
-        }
+      if (!onlySchool) {
+        apiDataArray.push(playgroundFormat);
       }
-    });
+    }));
 
     res.json(apiDataArray);
   },
