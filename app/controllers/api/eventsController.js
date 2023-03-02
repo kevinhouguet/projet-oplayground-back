@@ -31,7 +31,7 @@ module.exports = {
 
     const startDateFormat = dayjs(event.start_date);
 
-    event.member_id = userId;
+    event.member_id = parseInt(userId, 10);
     event.start_date = startDateFormat.format();
     event.stop_date = startDateFormat.add(2, 'hour').format();
 
