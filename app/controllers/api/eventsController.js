@@ -76,7 +76,7 @@ module.exports = {
       throw new ApiError('Not Free', '', 'Schedule is full');
     }
 
-    const eventFilled = { event, ...isEventInDb };
+    const eventFilled = { ...isEventInDb, ...event };
 
     const updatedEvent = await datamapper.updateOneEvent(eventFilled);
 
