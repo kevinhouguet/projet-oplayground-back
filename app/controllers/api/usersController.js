@@ -95,9 +95,11 @@ module.exports = {
       throw new ApiError('Data Not Valid', 400, 'At least one mandatory data in error');
     }
 
-    const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+    if (user.password) {
+      const hashedPassword = await bcrypt.hash(user.password, saltRounds);
 
-    user.password = hashedPassword;
+      user.password = hashedPassword;
+    }
 
     let memberUpdated = await datamapper.updateOneMember(user, parseInt(userId, 10));
 

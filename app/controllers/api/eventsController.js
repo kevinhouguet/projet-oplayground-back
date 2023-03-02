@@ -17,15 +17,14 @@ module.exports = {
 
     // if playground does already exists
 
-    const playgroundExisting = await datamapper.isPlaygroundAlreadyInDB(terrain);
+    const playgroundExisting = await datamapper.isPlaygroundAlreadyInDB(terrain.playgroundId);
 
     if (!playgroundExisting) {
       // Start with insert playground in db
-      const playground = await datamapper.addOnePlayground(terrain);
-      event.playground_id = playground.id;
-    } else {
-      event.playground_id = playgroundExisting.id;
+      await datamapper.addOnePlayground(terrain);
     }
+
+    event.playground_id = terrain.playgroundId;
 
     // after that, we add some property to event object and we insert event in db
 

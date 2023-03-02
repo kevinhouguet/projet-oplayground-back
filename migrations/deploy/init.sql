@@ -41,7 +41,7 @@ CREATE TABLE
 
 CREATE TABLE
     "playground" (
-        "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+        "id" TEXT NOT NULL PRIMARY KEY,
         "name" TEXT NOT NULL,
         "surface" TEXT NOT NULL,
         "address" TEXT NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE
         "stop_date" TIMESTAMPTZ NOT NULL,
         "max_player" INT NOT NULL,
         "member_id" INT NOT NULL REFERENCES "member"("id"),
-        "playground_id" INT NOT NULL REFERENCES "playground"("id"),
+        "playground_id" TEXT NOT NULL REFERENCES "playground"("id"),
         "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
         "updated_at" TIMESTAMPTZ
     );

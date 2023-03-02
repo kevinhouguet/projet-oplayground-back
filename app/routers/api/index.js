@@ -161,7 +161,7 @@ apiRouter.patch('/users/:userId', controllerErrorHandler(authenticationControl),
 apiRouter.post('/users/signin', controllerErrorHandler(usersController.connectMember));
 apiRouter.get('/terrains', controllerErrorHandler(terrainsController.playgroundList));
 
-// apiRouter.get('/terrains/:id', controllerErrorHandler(terrainsController.playgroundById));
+apiRouter.get('/terrains/:playgroundId', controllerErrorHandler(terrainsController.playgroundById));
 
 // apiRouter.get('/terrains/:id/events', controllerErrorHandler(terrainsController.playgroundEvent));
 
