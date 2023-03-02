@@ -115,7 +115,7 @@ module.exports = {
     //   user.password = hashedPassword;
     // }
 
-    const userFilled = { userIsInDB, ...user };
+    const userFilled = { ...userIsInDB, ...user };
 
     let memberUpdated = await datamapper.updateOneMember(userFilled, parseInt(userId, 10));
 
