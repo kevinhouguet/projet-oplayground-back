@@ -4,3 +4,4 @@ sqitch.conf
 .eslintrc.js
 *.http
 .gitattributes
+docs/

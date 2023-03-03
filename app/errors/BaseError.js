@@ -1,3 +1,11 @@
+/**
+ * Custom class Error to base all Error custom in same format
+ * @constructor
+ * @param {string} name - the name of the error
+ * @param {string} httpCode - the code http rendered to client side
+ * @param {string} message - message send to the client
+ */
+
 class BaseError extends Error {
   constructor(name, httpCode, message) {
     super(message);

@@ -12,6 +12,11 @@
 - eslint
 - sqitch
 - pg
+- cors
+- joi
+- jsonwebtoken
+- node-fetch
+- swagger jsdoc / swagger ui express
 
 ## How to install it ?
 
@@ -24,7 +29,13 @@ npm install
 
 ```bash
 # Server express side
-PORT=
+PORT= 
+NODE_ENV= dev
+BASE_URL_DEV=localhost
+BASE_URL_PROD=https://oplaygroundapi.herokuapp.com
+NODE_TLS_REJECT_UNAUTHORIZED=0
+ACCESS_TOKEN_SECRET=
+ASK_RESET_PASSWORD_TOKEN=
 
 # Postgres server side : https://node-postgres.com/apis/client
 PGHOST=
@@ -38,13 +49,25 @@ PGPORT=
 npm start
 ```
 
-## How to fake it ?
+## How to seed fake data ?
 
-...
+```javascript
+npm run seed
+```
 
 ## API architecture
 
-...
+- app
+ - controllers
+ - db
+ - errors
+ - helpers
+ - routers
+ - swagger
+ - validation
+ - views
+- data
+- migrations
 
 ## Routes
 
