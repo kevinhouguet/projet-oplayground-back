@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "npx nodemon app",
     "seed": "node data/buildData.js",
+    "generate-docs": "jsdoc -c ./app/jsdocs/jsdoc.conf.json",
     "start": "node app"
   },
   "repository": {
@@ -22,7 +23,8 @@
   "devDependencies": {
     "eslint": "^8.34.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.27.5"
+    "eslint-plugin-import": "^2.27.5",
+    "jsdoc": "^4.0.2"
   },
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
