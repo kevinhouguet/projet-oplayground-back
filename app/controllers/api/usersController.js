@@ -157,7 +157,7 @@ module.exports = {
       const accessToken = jwt.sign(searchMemberEmail, process.env.ACCESS_TOKEN_SECRET);
       res.status(200).json({ accessToken });
     } else {
-      throw new ApiError('Data Not Valid', 400, 'At least one mandatory data in error');
+      throw new ApiError('Data Not Valid', 400, 'User credentials invalid');
     }
   },
 };

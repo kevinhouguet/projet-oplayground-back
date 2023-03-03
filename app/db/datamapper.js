@@ -23,16 +23,10 @@ const db = require('./index');
  * @property {TIMESTAMPTZ} start_date - The event start date
  * @property {TIMESTAMPTZ} start_date - The event stop date
  * @property {number} max_player - The event maximum player
- * @property {number} member_id - The member id of creator 
+ * @property {number} member_id - The member id of creator
  * @property {number} playground_id - The playground where the event is
  */
-"id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-        "name" TEXT NOT NULL,
-        "start_date" TIMESTAMPTZ NOT NULL,
-        "stop_date" TIMESTAMPTZ NOT NULL,
-        "max_player" INT NOT NULL,
-        "member_id" INT NOT NULL REFERENCES "member"("id"),
-        "playground_id" TEXT NOT NULL REFERENCES "playground"("id"),
+
 /**
  * Function that retrieve all members in db
  * @returns {Member[]}
@@ -130,8 +124,8 @@ async function updateOneMember(userObject, id) {
 }
 /**
  * Retrieve all event in db
- * @param {*} userId 
- * @returns 
+ * @param {*} userId
+ * @returns
  */
 async function getAllEvent(userId) {
   const query = {
