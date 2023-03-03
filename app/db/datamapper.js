@@ -1,5 +1,42 @@
 const db = require('./index');
 
+/**
+ * A member
+ * @typedef {Object} Member
+ * @property {number} id - The member id
+ * @property {string} email - The member email
+ * @property {string} username - The member username
+ * @property {string} password - The member password
+ * @property {string} firstname - The member firstname
+ * @property {string} avatar - The member avatar
+ * @property {string} username - The member username
+ * @property {number} age - The member age
+ * @property {string} sexe - The member gender
+ * @property {string} city - The member city location
+ */
+
+/**
+ * An Event
+ * @typedef {Object} Event
+ * @property {number} id - The event id
+ * @property {string} name - The event name
+ * @property {TIMESTAMPTZ} start_date - The event start date
+ * @property {TIMESTAMPTZ} start_date - The event stop date
+ * @property {number} max_player - The event maximum player
+ * @property {number} member_id - The member id of creator 
+ * @property {number} playground_id - The playground where the event is
+ */
+"id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+        "name" TEXT NOT NULL,
+        "start_date" TIMESTAMPTZ NOT NULL,
+        "stop_date" TIMESTAMPTZ NOT NULL,
+        "max_player" INT NOT NULL,
+        "member_id" INT NOT NULL REFERENCES "member"("id"),
+        "playground_id" TEXT NOT NULL REFERENCES "playground"("id"),
+/**
+ * Function that retrieve all members in db
+ * @returns {Member[]}
+ */
 async function getAllMember() {
   const query = {
     text: 'SELECT * FROM "member";',
@@ -8,7 +45,11 @@ async function getAllMember() {
   const result = await db.query(query);
   return result.rows;
 }
-
+/**
+ * Retrieve one member in db by his id
+ * @param {number} id
+ * @returns {Object}
+ */
 async function getOneMember(id) {
   const query = {
     text: 'SELECT * FROM "member" WHERE id=$1;',
@@ -18,7 +59,11 @@ async function getOneMember(id) {
   const result = await db.query(query);
   return result.rows[0];
 }
-
+/**
+ * Retrieve one member in db by his email
+ * @param {string} email
+ * @returns {Object}
+ */
 async function getOneMemberByEmail(email) {
   const query = {
     text: 'SELECT * FROM "member" WHERE email=$1;',
@@ -28,7 +73,11 @@ async function getOneMemberByEmail(email) {
   const result = await db.query(query);
   return result.rows[0];
 }
-
+/**
+ * Retrieve one member in db by his usename
+ * @param {string} username
+ * @returns {Object}
+ */
 async function getOneMemberByUsername(username) {
   const query = {
     text: 'SELECT * FROM "member" WHERE username=$1;',
@@ -38,7 +87,11 @@ async function getOneMemberByUsername(username) {
   const result = await db.query(query);
   return result.rows[0];
 }
-
+/**
+ * Add one member by his own object
+ * @param {Member} memberObject - the member object to add
+ * @returns {Member}
+ */
 async function addOneMember(memberObject) {
   const query = {
     text: 'SELECT * FROM "insert_member"($1);',
@@ -48,7 +101,10 @@ async function addOneMember(memberObject) {
   const result = await db.query(query);
   return result.rows[0];
 }
-
+/**
+ * Delete one member by his id
+ * @param {number} id - id of member to delete
+ */
 async function deleteOneMember(id) {
   const query = {
     text: 'DELETE FROM "member" WHERE id=$1',
@@ -57,7 +113,12 @@ async function deleteOneMember(id) {
 
   await db.query(query);
 }
-
+/**
+ * Update one member by his own object and his id
+ * @param {Member} userObject - member object to update
+ * @param {number} id - id of member that need to update
+ * @returns {Member}
+ */
 async function updateOneMember(userObject, id) {
   const query = {
     text: 'SELECT * FROM "update_member"($1,$2);',
@@ -67,7 +128,11 @@ async function updateOneMember(userObject, id) {
   const result = await db.query(query);
   return result.rows[0];
 }
-
+/**
+ * Retrieve all event in db
+ * @param {*} userId 
+ * @returns 
+ */
 async function getAllEvent(userId) {
   const query = {
     text: 'SELECT * FROM "encounter" WHERE "member_id"=$1;',
