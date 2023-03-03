@@ -104,7 +104,7 @@ module.exports = {
       throw new ApiError('Data Not Valid', 400, 'At least one mandatory data in error');
     }
 
-    const userIsInDB = await datamapper.getOneMember(userId);
+    const userIsInDB = await datamapper.getOneMember(parseInt(userId));
     if (!userIsInDB) {
       throw new NotFoundError();
     }
