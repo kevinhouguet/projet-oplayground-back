@@ -1,5 +1,3 @@
--- Revert migrations:modification_for_update_member from pg
-
 BEGIN;
 
 DROP FUNCTION "update_member";

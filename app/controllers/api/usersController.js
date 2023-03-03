@@ -110,12 +110,18 @@ module.exports = {
     }
 
     if (user.password) {
+      console.log(`user mdp :${user.password}`);
       const hashedPassword = await bcrypt.hash(user.password, saltRounds);
 
       user.password = hashedPassword;
+      console.log(`user mdp hashed: ${hashedPassword}`);
     }
 
+    const userIsInDB = await datamapper.getOneMember(parseInt(userId, 10));
+
     const userFilled = { ...userIsInDB, ...user };
+
+    console.log(userFilled);
 
     let memberUpdated = await datamapper.updateOneMember(userFilled, parseInt(userId, 10));
 
@@ -155,7 +161,7 @@ module.exports = {
       const accessToken = jwt.sign(searchMemberEmail, process.env.ACCESS_TOKEN_SECRET);
       res.status(200).json({ accessToken });
     } else {
-      throw new ApiError('Data Not Valid', 400, 'At least one mandatory data in error');
+      throw new ApiError('Data Not Valid', 400, 'User credentials invalid');
     }
   },
 };
