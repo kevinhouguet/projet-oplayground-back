@@ -2,5 +2,6 @@ node_modules/
 .env
 sqitch.conf
 .eslintrc.js
-test.http
+*.http
 .gitattributes
+docs/

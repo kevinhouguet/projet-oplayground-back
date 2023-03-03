@@ -110,7 +110,15 @@ module.exports = {
       user.password = hashedPassword;
     }
 
-    let memberUpdated = await datamapper.updateOneMember(user, parseInt(userId, 10));
+    // if (user.password) {
+    //   const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+
+    //   user.password = hashedPassword;
+    // }
+
+    const userFilled = { ...userIsInDB, ...user };
+
+    let memberUpdated = await datamapper.updateOneMember(userFilled, parseInt(userId, 10));
 
     memberUpdated = {
       id: memberUpdated.id,
