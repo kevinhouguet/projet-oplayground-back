@@ -150,6 +150,7 @@ module.exports = {
         id: searchMemberEmail.id,
         username: searchMemberEmail.username,
       };
+      console.log(searchMemberEmail);
       // JWT : https://www.youtube.com/watch?v=mbsmsi7l3r4&t=804s
       const accessToken = jwt.sign(searchMemberEmail, process.env.ACCESS_TOKEN_SECRET);
       res.status(200).json({ accessToken });
