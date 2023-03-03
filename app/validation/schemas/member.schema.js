@@ -16,7 +16,7 @@ const userSchemas = {
     avatar: Joi.string().alphanum(),
     age: Joi.number().integer(),
     sexe: Joi.string().alphanum(),
-    city: Joi.string().alphanum(),
+    city: Joi.string(),
   }),
   patch: Joi.object({
     username: Joi.string().alphanum(),
@@ -26,7 +26,7 @@ const userSchemas = {
     avatar: Joi.string().alphanum(),
     age: Joi.number().integer(),
     sexe: Joi.string().alphanum(),
-    city: Joi.string().alphanum(),
+    city: Joi.string(),
   }),
   signin: Joi.object({
     email: emailRule.required(),
