@@ -116,6 +116,9 @@ module.exports = {
     }
 
     const userIsInDB = await datamapper.getOneMember(parseInt(userId, 10));
+    if (!userIsInDB) {
+      throw new NotFoundError();
+    }
 
     const userFilled = { ...userIsInDB, ...user };
 
