@@ -115,6 +115,11 @@ module.exports = {
       console.log(`user mdp hashed: ${hashedPassword}`);
     }
 
+    const userIsInDB = await datamapper.getOneMember(parseInt(userId, 10));
+    if (!userIsInDB) {
+      throw new NotFoundError();
+    }
+
     const userFilled = { ...userIsInDB, ...user };
 
     console.log(userFilled);
