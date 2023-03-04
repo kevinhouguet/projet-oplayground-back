@@ -20,7 +20,7 @@ const userSchemas = {
   }),
   patch: Joi.object({
     username: Joi.string().alphanum(),
-    password: passwordRule,
+    password: passwordRule.allow(''),
     firstname: Joi.string(),
     lastname: Joi.string(),
     avatar: Joi.string(),
