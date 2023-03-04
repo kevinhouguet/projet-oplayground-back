@@ -103,13 +103,11 @@ module.exports = {
     if (userId && isNaN(parseInt(userId, 10))) {
       throw new ApiError('Data Not Valid', 400, 'At least one mandatory data in error');
     }
-
-    const userIsInDB = await datamapper.getOneMember(parseInt(userId, 10));
-    if (!userIsInDB) {
-      throw new NotFoundError();
+    console.log(`user.password ${user.password}`);
+    if (user.password === '') {
+      delete user.password;
     }
-
-    if (user.password) {
+    if (user.password && user.password !== '') {
       console.log(`user mdp :${user.password}`);
       const hashedPassword = await bcrypt.hash(user.password, saltRounds);
 
