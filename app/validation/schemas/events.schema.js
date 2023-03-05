@@ -7,7 +7,7 @@ const playgroundSchemas = {
     terrain: {
       name: Joi.string().required(),
       surface: Joi.string().required(),
-      type: Joi.string().required(),
+      type: Joi.string(),
       address: Joi.string().required(),
       zipCode: zipCodeFRRule,
       city: Joi.string().required(),
