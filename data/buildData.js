@@ -1,8 +1,8 @@
 const { faker } = require('@faker-js/faker');
+const crypto = require('node:crypto');
 const db = require('../app/db');
-const getRandomInt = require('../app/helpers/getRandomInt');
 
-const getCommunes = require('./getCommunes');
+const getRandomInt = require('../app/helpers/getRandomInt');
 
 // FAKE DATA DEPENDANCIES
 const playgroundName = [
@@ -26,7 +26,7 @@ const playgroundName = [
   'espace sportif Jean Pierre Rives',
 ];
 const groundNature = ['dur', 'parquet', 'terre battue', 'gazon', 'synthétique', 'moquette'];
-const eventName = ['partie entre amis', 'sport entre amis', 'retrouvailles', ' le grand match'];
+const eventName = ['partie entre amis', 'sport entre amis', 'retrouvailles', 'le grand match'];
 
 const createData = {
   async createRandomMember(communes) {
@@ -45,10 +45,11 @@ const createData = {
 
   async createRandomPlayground(communes) {
     return {
+      playgroundId: crypto.randomUUID(),
       name: playgroundName[getRandomInt(0, playgroundName.length - 1)],
       surface: groundNature[getRandomInt(0, groundNature.length - 1)],
       address: faker.address.streetAddress().replaceAll("'", "''"),
-      zip_code: communes[getRandomInt(0, communes.length - 1)].codesPostaux[0],
+      zipCode: communes[getRandomInt(0, communes.length - 1)].codesPostaux[0],
       city: communes[getRandomInt(0, communes.length - 1)].nom.replaceAll("'", "''"),
       picture: '',
 
@@ -71,7 +72,6 @@ const insertData = {
   async insertMember(member) {
     const query = `SELECT * FROM "insert_member"('${JSON.stringify(member)}');`;
     const result = await db.query(query);
-
     return result.rows;
   },
 
@@ -100,20 +100,7 @@ const insertData = {
   },
 };
 
-(async () => {
-  const communes = await getCommunes();
-
-  Array.from({ length: 10 }, async () => {
-    const member = await createData.createRandomMember(communes);
-    console.log(member);
-    const newMember = await insertData.insertMember(member);
-
-    const playground = await createData.createRandomPlayground(communes);
-    console.log(playground);
-    const newPlayground = await insertData.insertPlayground(playground);
-
-    const event = await createData.createRandomEvent();
-    console.log(event);
-    const newEvent = await insertData.insertEvent(event);
-  });
-})();
+module.exports = {
+  createData,
+  insertData,
+};

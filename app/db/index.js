@@ -1,19 +1,17 @@
 require('dotenv').config();
-const { Client } = require('pg');
+const { Pool } = require('pg');
 
-let client;
+let pool;
 
 if (process.env.NODE_ENV === 'production') {
-  client = new Client({
+  pool = new Pool({
     connectionString: `${process.env.DATABASE_URL}`,
     ssl: true,
   });
 } else {
-  client = new Client();
+  pool = new Pool();
 }
 
-client.connect()
-  .then(() => console.log('DB Connexion : OK'))
-  .catch((err) => console.error(`DB Connexion : ${err.message}`));
-
-module.exports = client;
+module.exports = {
+  query: (text, params) => pool.query(text, params),
+};
