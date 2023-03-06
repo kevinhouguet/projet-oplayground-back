@@ -235,7 +235,7 @@ async function getOneEvent(id) {
 
 async function getOneEventWithAuthor(id) {
   const query = {
-    text: ` SELECT *, "member"."email"  FROM "encounter"
+    text: ` SELECT "encounter".*, "member"."email"  FROM "encounter"
             INNER JOIN "member" ON "member"."id" = "encounter"."member_id"
             WHERE id=$1`,
     values: [id],
