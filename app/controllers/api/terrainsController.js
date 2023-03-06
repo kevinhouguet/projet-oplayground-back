@@ -62,7 +62,9 @@ module.exports = {
       const isPlaygroundAlreadyInDB = await datamapper.isPlaygroundAlreadyInDB(playgroundId);
       if (isPlaygroundAlreadyInDB) {
         const getEvents = await datamapper.getAllEventByPlaygroundId(isPlaygroundAlreadyInDB.id);
-        if (getEvents) playgroundFormat.events = getEvents;
+        if (getEvents) {
+          playgroundFormat.events = getEvents;
+        }
       }
       // On retire les salles seulement pour les écoles.
       const onlySchool = playground.fields.caract159 === 'Scolaires, universités';

@@ -47,7 +47,9 @@ module.exports = {
 
     const newEvent = await datamapper.addOneEvent(event);
 
-    res.status(200).json(newEvent);
+    const newEventToSend = await datamapper.getOneEventWithAuthor(newEvent.id);
+
+    res.status(200).json(newEventToSend);
   },
 
   async updateOneEvent(req, res) {
