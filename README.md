@@ -55,6 +55,8 @@ npm start
 npm run seed
 ```
 
+/ ! \ Disclaimer : you need to have nodejs version >= 18 because of fetch native module.
+
 ## API architecture
 
 - app
