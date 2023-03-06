@@ -120,7 +120,7 @@ apiRouter.delete('/users/:userId', controllerErrorHandler(authenticationControl)
  *        content:
  *          application/json:
  *              schema:
- *                $ref: '#/components/schemas/User'
+ *                $ref: #/components/schemas/User
  *      400:
  *        description: Returns a JSON with error message
  *      404:
@@ -156,6 +156,28 @@ apiRouter.patch('/users/:userId', validate(userPatchSchema, 'body'), controllerE
  *        description: Returns a not found error
  */
 apiRouter.post('/users/signin', validate(userSigninSchema, 'body'), controllerErrorHandler(usersController.connectMember));
+/**
+ * @swagger
+ * /terrains:
+ *  get:
+ *    tags:
+ *      - Playground
+ *    summary: Retrieve all playground by commune
+ *    description: Retrieve all playground by commune
+ *    requestBody:
+ *      description: Retrieve all playground by commune
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Playground'
+ *    responses:
+ *      202:
+ *        description: Returns an array of Playground
+ *      400:
+ *        description: Returns a JSON with error message
+ *      404:
+ *        description: Returns a not found error
+ */
 apiRouter.get('/terrains', controllerErrorHandler(terrainsController.playgroundList));
 
 apiRouter.get('/terrains/:playgroundId', controllerErrorHandler(terrainsController.playgroundById));

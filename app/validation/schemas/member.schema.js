@@ -9,23 +9,23 @@ const passwordRule = Joi.string().pattern(new RegExp(process.env.PASSWORD_RULE))
 const userSchemas = {
   post: Joi.object({
     email: emailRule.required(),
-    username: Joi.string().alphanum().required(),
+    username: Joi.string().required(),
     password: passwordRule.required(),
     firstname: Joi.string(),
     lastname: Joi.string(),
     avatar: Joi.string(),
     age: Joi.number().integer(),
-    sexe: Joi.string().alphanum(),
+    sexe: Joi.string(),
     city: Joi.string(),
   }),
   patch: Joi.object({
-    username: Joi.string().alphanum(),
+    username: Joi.string(),
     password: passwordRule.allow(''),
     firstname: Joi.string(),
     lastname: Joi.string(),
     avatar: Joi.string(),
     age: Joi.number().integer(),
-    sexe: Joi.string().alphanum(),
+    sexe: Joi.string(),
     city: Joi.string(),
   }),
   signin: Joi.object({
