@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1678121257201" clover="3.2.0">
-  <project timestamp="1678121257202" name="All files">
-    <metrics statements="136" coveredstatements="91" conditionals="3" coveredconditionals="2" methods="8" coveredmethods="2" elements="147" coveredelements="95" complexity="0" loc="136" ncloc="136" packages="3" files="3" classes="3"/>
+<coverage generated="1678123044939" clover="3.2.0">
+  <project timestamp="1678123044939" name="All files">
+    <metrics statements="145" coveredstatements="100" conditionals="4" coveredconditionals="3" methods="9" coveredmethods="3" elements="158" coveredelements="106" complexity="0" loc="145" ncloc="145" packages="3" files="4" classes="4"/>
     <package name="app.db">
-      <metrics statements="17" coveredstatements="13" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
+      <metrics statements="18" coveredstatements="14" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
       <file name="index.js" path="D:\Dev\projet-05-terrain-de-sport-back\app\db\index.js">
-        <metrics statements="17" coveredstatements="13" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <metrics statements="18" coveredstatements="14" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
-        <line num="6" count="1" type="cond" truecount="0" falsecount="1"/>
-        <line num="7" count="0" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="1" type="cond" truecount="0" falsecount="1"/>
         <line num="8" count="0" type="stmt"/>
         <line num="9" count="0" type="stmt"/>
         <line num="10" count="0" type="stmt"/>
-        <line num="11" count="1" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
         <line num="14" count="1" type="stmt"/>
         <line num="15" count="1" type="stmt"/>
         <line num="16" count="1" type="stmt"/>
         <line num="17" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
       </file>
     </package>
     <package name="app.helpers">
@@ -35,17 +36,17 @@
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
         <line num="6" count="1" type="stmt"/>
-        <line num="7" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="8" count="2" type="stmt"/>
-        <line num="9" count="2" type="stmt"/>
-        <line num="10" count="2" type="stmt"/>
-        <line num="11" count="2" type="stmt"/>
+        <line num="7" count="4" type="cond" truecount="1" falsecount="0"/>
+        <line num="8" count="4" type="stmt"/>
+        <line num="9" count="4" type="stmt"/>
+        <line num="10" count="4" type="stmt"/>
+        <line num="11" count="4" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
       </file>
     </package>
     <package name="data">
-      <metrics statements="106" coveredstatements="65" conditionals="1" coveredconditionals="1" methods="6" coveredmethods="1"/>
+      <metrics statements="114" coveredstatements="73" conditionals="2" coveredconditionals="2" methods="7" coveredmethods="2"/>
       <file name="buildData.js" path="D:\Dev\projet-05-terrain-de-sport-back\data\buildData.js">
         <metrics statements="106" coveredstatements="65" conditionals="1" coveredconditionals="1" methods="6" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
@@ -154,6 +155,17 @@
         <line num="104" count="1" type="stmt"/>
         <line num="105" count="1" type="stmt"/>
         <line num="106" count="1" type="stmt"/>
+      </file>
+      <file name="getCommunes.js" path="D:\Dev\projet-05-terrain-de-sport-back\data\getCommunes.js">
+        <metrics statements="8" coveredstatements="8" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
       </file>
     </package>
   </project>

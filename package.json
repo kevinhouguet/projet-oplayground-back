@@ -8,7 +8,7 @@
     "seed": "node data/seeding.js",
     "generate-docs": "jsdoc -c ./app/jsdocs/jsdoc.conf.json",
     "start": "node app",
-    "test": "jest"
+    "test": "jest --verbose"
   },
   "repository": {
     "type": "git",
