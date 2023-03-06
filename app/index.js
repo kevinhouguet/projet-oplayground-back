@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
+const rateLimit = require('express-rate-limit');
 const routers = require('./routers');
 
 const options = {
@@ -25,9 +26,17 @@ const openapiSpecification = swaggerJsdoc(options);
 
 const app = express();
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100000, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
 app.set('view engine', 'ejs');
 app.set('views', './app/views');
 
+app.use(limiter);
 app.use(cors({
   origin: '*',
 }));
