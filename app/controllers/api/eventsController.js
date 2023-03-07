@@ -6,25 +6,40 @@ const NotFoundError = require('../../errors/NotFound');
 
 module.exports = {
   async eventList(req, res) {
-    const { eventId } = req.params;
-    const events = await datamapper.getAllEvent(parseInt(eventId, 10));
+    const { id: userId } = req.user;
+    const events = await datamapper.getAllEvent(parseInt(userId, 10));
+    if (!events) throw new NotFoundError();
 
     res.status(200).json(events);
   },
   async addOneEvent(req, res) {
     const { id: userId } = req.user;
-    const { terrain, event } = req.body;
+    const event = req.body;
 
     // if playground does already exists
 
-    const playgroundExisting = await datamapper.isPlaygroundAlreadyInDB(terrain.playgroundId);
+    const playgroundExisting = await datamapper.isPlaygroundAlreadyInDB(event.playgroundId);
 
     if (!playgroundExisting) {
-      // Start with insert playground in db
-      await datamapper.addOnePlayground(terrain);
-    }
+      const url = `https://equipements.sports.gouv.fr/api/records/1.0/search/?dataset=data-es&q=recordid%3D${event.playgroundId}`;
+      const httpResponse = await fetch(url);
+      const data = await httpResponse.json();
 
-    event.playground_id = terrain.playgroundId;
+      await Promise.all(data.records.map(async (playground) => {
+        const playgroundFormat = {
+        // Voir doc api data-es : https://equipements.sports.gouv.fr/explore/dataset/data-es/information/
+          name: playground.fields.nomequipement,
+          surface: playground.fields.caract167,
+          type: playground.fields.typequipement,
+          address: playground.fields.adresse,
+          zipCode: playground.fields.codepostal,
+          city: playground.fields.commune,
+          public: playground.fields.caract159,
+          playgroundId: playground.recordid,
+        };
+        await datamapper.addOnePlayground(playgroundFormat);
+      }));
+    }
 
     // after that, we add some property to event object and we insert event in db
 
@@ -37,7 +52,7 @@ module.exports = {
     const isCalendarNotFree = await datamapper.isCalendarNotFree(
       startDateFormat,
       event.stop_date,
-      event.playground_id,
+      event.playgroundId,
       event.id,
     );
 
