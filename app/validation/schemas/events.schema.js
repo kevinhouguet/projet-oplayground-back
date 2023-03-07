@@ -6,9 +6,9 @@ const playgroundSchemas = {
   post: Joi.object({
     terrain: {
       name: Joi.string().required(),
-      surface: Joi.string().required(),
+      surface: Joi.string(),
       type: Joi.string(),
-      address: Joi.string().required(),
+      address: Joi.string(),
       zipCode: zipCodeFRRule,
       city: Joi.string().required(),
       playgroundId: Joi.string().required(),
