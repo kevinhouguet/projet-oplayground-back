@@ -73,8 +73,7 @@ module.exports = {
         apiDataArray.push(playgroundFormat);
       }
     }));
-
-    res.json(apiDataArray);
+    res.json(apiDataArray[0]);
   },
 
   // playgroundEvent: (req, res) => {
