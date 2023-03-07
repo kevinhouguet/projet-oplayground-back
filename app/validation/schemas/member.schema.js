@@ -30,7 +30,7 @@ const userSchemas = {
   }),
   signin: Joi.object({
     email: emailRule.required(),
-    password: passwordRule.required(),
+    password: Joi.string().required(),
   }),
 };
 
