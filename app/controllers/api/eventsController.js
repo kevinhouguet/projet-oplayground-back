@@ -12,7 +12,7 @@ module.exports = {
     res.status(200).json(events);
   },
   async addOneEvent(req, res) {
-    const { userId } = req.params;
+    const { id: userId } = req.user;
     const { terrain, event } = req.body;
 
     // if playground does already exists
