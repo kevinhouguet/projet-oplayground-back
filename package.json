@@ -4,7 +4,7 @@
   "description": "## Presentation",
   "main": "index.js",
   "scripts": {
-    "dev": "npx nodemon app",
+    "dev": "set DEBUG=0 && npx nodemon app",
     "seed": "node data/buildData.js",
     "generate-docs": "jsdoc -c ./app/jsdocs/jsdoc.conf.json",
     "start": "node app"
