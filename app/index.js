@@ -1,27 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const swaggerUi = require('swagger-ui-express');
-const swaggerJsdoc = require('swagger-jsdoc');
+const { swaggerUi, openapiSpecification } = require('./swagger');
 const routers = require('./routers');
-
-const options = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: "O'playground API",
-      version: '1.0.0',
-    },
-    servers: [
-      {
-        url: 'http://localhost:3002/api',
-        description: "O'playground API",
-      },
-    ],
-  },
-  apis: ['app/*/*/*.js'], // files containing annotations as above
-};
-
-const openapiSpecification = swaggerJsdoc(options);
 
 const app = express();
 
