@@ -6,8 +6,7 @@ function validate(schema, dataSource) {
       await schema.validateAsync(req[dataSource]);
       next();
     } catch (error) {
-      console.error(error.details[0].message);
-      next(new UserInputError());
+      next(new UserInputError(error.details[0].message));
     }
   };
 }

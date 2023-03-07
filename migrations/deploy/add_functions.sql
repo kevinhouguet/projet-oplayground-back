@@ -73,7 +73,7 @@ CREATE FUNCTION "insert_encounter"(encounter JSON) RETURNS encounter AS $$
 	        (encounter ->> 'start_date')::TIMESTAMPTZ,
 	        (encounter ->> 'stop_date')::TIMESTAMPTZ,
 	        (encounter ->> 'max_player')::INT,
-	        encounter ->> 'playground_id'
+	        encounter ->> 'playgroundId'
 	    )
 	RETURNING *;
 $$ LANGUAGE SQL; 

@@ -7,11 +7,11 @@ const BaseError = require('./BaseError');
  * @param {string} [message="The data provided are invalid"] - message send to the client
  */
 class UserInputError extends BaseError {
-  constructor() {
-    super();
-    this.name = 'UserInputError';
+  constructor(message) {
+    super(message);
+    this.name = 'InputValidationError';
     this.httpCode = 400;
-    this.message = 'The data provided are invalid';
+    this.message = message;
   }
 }
 
