@@ -58,6 +58,7 @@ module.exports = {
         city: playground.fields.commune,
         public: playground.fields.caract159,
         playgroundId: playground.recordid,
+        events: [],
       };
       const isPlaygroundAlreadyInDB = await datamapper.isPlaygroundAlreadyInDB(playgroundId);
       if (isPlaygroundAlreadyInDB) {
