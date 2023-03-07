@@ -164,12 +164,19 @@ apiRouter.post('/users/signin', validate(userSigninSchema, 'body'), controllerEr
  *      - Playground
  *    summary: Retrieve all playground by commune
  *    description: Retrieve all playground by commune
- *    requestBody:
- *      description: Retrieve all playground by commune
- *      content:
- *        application/json:
- *          schema:
- *            $ref: '#/components/schemas/Playground'
+ *    parameters:
+ *       - name: commune
+ *         in: query
+ *         description: Name of commune
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - name: codepostal
+ *         in: query
+ *         description: Zip Code of commune
+ *         required: true
+ *         schema:
+ *           type: string
  *    responses:
  *      202:
  *        description: Returns an array of Playground
@@ -179,17 +186,41 @@ apiRouter.post('/users/signin', validate(userSigninSchema, 'body'), controllerEr
  *        description: Returns a not found error
  */
 apiRouter.get('/terrains', controllerErrorHandler(terrainsController.playgroundList));
-
+/**
+ * @swagger
+ * /terrains/{playgroundId}:
+ *  get:
+ *    tags:
+ *      - Playground
+ *    summary: Retrieve One playground
+ *    description: Retrieve One playground
+ *    parameters:
+ *       - name: playgroundId
+ *         in: path
+ *         description: ID of playground
+ *         required: true
+ *         schema:
+ *           type: string
+ *    responses:
+ *      202:
+ *        description: Returns an array of Playground
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#components/schemas/Playground'
+ *      400:
+ *        description: Returns a JSON with error message
+ *      404:
+ *        description: Returns a not found error
+ */
 apiRouter.get('/terrains/:playgroundId', controllerErrorHandler(terrainsController.playgroundById));
-
-// apiRouter.get('/terrains/:id/events', controllerErrorHandler(terrainsController.playgroundEvent));
 
 /**
  * @swagger
  * /users/{userId}/events:
  *  get:
  *    tags:
- *      - Users
+ *      - Events
  *    summary: Retrieve events for a user
  *    description: Retrieve events for a user
  *    parameters:
@@ -211,7 +242,38 @@ apiRouter.get('/terrains/:playgroundId', controllerErrorHandler(terrainsControll
  *      - Authorization: []
  */
 apiRouter.get('/users/:userId/events', authenticationControl, controllerErrorHandler(eventsController.eventList));
-
+/**
+ * @swagger
+ * /users/{userId}/events:
+ *  post:
+ *    tags:
+ *      - Events
+ *    summary: Create one event by userid
+ *    description: Create one event by userid
+ *    parameters:
+ *       - name: userId
+ *         in: path
+ *         description: ID of user which want to create event
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           format: int64
+ *    requestBody:
+ *      description: Signin a user
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#components/schemas/Event'
+ *    responses:
+ *      202:
+ *        description: Returns an array of events
+ *      400:
+ *        description: Returns a JSON with error message
+ *      404:
+ *        description: Returns a not found error
+ *    security:
+ *      - Authorization: []
+ */
 apiRouter.post('/users/:userId/events', validate(eventPostSchema, 'body'), authenticationControl, controllerErrorHandler(eventsController.addOneEvent));
 /**
  * @swagger
@@ -229,6 +291,12 @@ apiRouter.post('/users/:userId/events', validate(eventPostSchema, 'body'), authe
  *         schema:
  *           type: integer
  *           format: int64
+ *    requestBody:
+ *      description: Update an event
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#components/schemas/Event'
  *    responses:
  *      202:
  *        description: Returns an Event object
@@ -244,6 +312,32 @@ apiRouter.post('/users/:userId/events', validate(eventPostSchema, 'body'), authe
  *      - Authorization: []
  */
 apiRouter.patch('/events/:eventId', validate(eventPatchSchema, 'body'), authenticationControl, controllerErrorHandler(eventsController.updateOneEvent));
+/**
+ * @swagger
+ * /events/{eventId}:
+ *  delete:
+ *    tags:
+ *      - Events
+ *    summary: Delete an event
+ *    description: Delete an event
+ *    parameters:
+ *       - name: eventId
+ *         in: path
+ *         description: ID of event
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           format: int64
+ *    responses:
+ *      202:
+ *        description: Returns successfull operation
+ *      400:
+ *        description: Returns a JSON with error message
+ *      404:
+ *        description: Returns a not found error
+ *    security:
+ *      - Authorization: []
+ */
 apiRouter.delete('/events/:eventId', authenticationControl, controllerErrorHandler(eventsController.deleteOneEvent));
 
 // ROUTE 404
