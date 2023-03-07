@@ -81,6 +81,8 @@ apiRouter.get('/users', controllerErrorHandler(authenticationControl), controlle
  *        description: Returns a JSON with error message
  *      404:
  *        description: Returns a not found error
+ *    security:
+ *     - Authorization: []
  */
 apiRouter.delete('/users', controllerErrorHandler(authenticationControl), controllerErrorHandler(usersController.deleteOneMember));
 /**
@@ -213,20 +215,12 @@ apiRouter.get('/terrains/:playgroundId', controllerErrorHandler(terrainsControll
 apiRouter.get('/events', controllerErrorHandler(authenticationControl), controllerErrorHandler(eventsController.eventList));
 /**
  * @swagger
- * /users/{userId}/events:
+ * /events:
  *  post:
  *    tags:
  *      - Events
  *    summary: Create one event by userid
  *    description: Create one event by userid
- *    parameters:
- *       - name: userId
- *         in: path
- *         description: ID of user which want to create event
- *         required: true
- *         schema:
- *           type: integer
- *           format: int64
  *    requestBody:
  *      description: Signin a user
  *      content:
