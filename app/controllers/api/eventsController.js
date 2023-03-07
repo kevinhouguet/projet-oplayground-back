@@ -69,13 +69,12 @@ module.exports = {
 
   async updateOneEvent(req, res) {
     const { eventId } = req.params;
+    const { id: userId } = req.user;
     const event = req.body;
 
     const isEventInDb = await datamapper.getOneEvent(parseInt(eventId, 10));
-
-    if (!isEventInDb) {
-      throw new NotFoundError();
-    }
+    if (!isEventInDb) throw new NotFoundError();
+    if (isEventInDb.member_id !== parseInt(userId, 10)) throw new ApiError('Forbidden', 403, 'Not authorize');
 
     event.id = parseInt(eventId, 10);
 
@@ -102,12 +101,12 @@ module.exports = {
 
   async deleteOneEvent(req, res) {
     const { eventId } = req.params;
+    const { id: userId } = req.user;
 
     const isEventInDb = await datamapper.getOneEvent(parseInt(eventId, 10));
 
-    if (!isEventInDb) {
-      throw new NotFoundError();
-    }
+    if (!isEventInDb) throw new NotFoundError();
+    if (isEventInDb.member_id !== parseInt(userId, 10)) throw new ApiError('Forbidden', 403, 'Not authorize');
 
     await datamapper.deleteOneEvent(parseInt(eventId, 10));
 

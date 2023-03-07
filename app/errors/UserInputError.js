@@ -9,7 +9,7 @@ const BaseError = require('./BaseError');
 class UserInputError extends BaseError {
   constructor(message) {
     super(message);
-    this.name = 'UserInputError';
+    this.name = 'InputValidationError';
     this.httpCode = 400;
     this.message = message;
   }
