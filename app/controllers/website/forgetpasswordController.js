@@ -18,7 +18,7 @@ module.exports = {
     if (!searchMemberEmail) {
       throw new NotFoundError();
     }
-    const resetPasswordToken = jwt.sign({ email }, process.env.ASK_RESET_PASSWORD_TOKEN);
+    const resetPasswordToken = jwt.sign({ email }, process.env.ACCESS_TOKEN_SECRET);
 
     const transporter = nodemailer.createTransport({
       host: 'smtp-relay.sendinblue.com',
@@ -53,7 +53,8 @@ module.exports = {
       throw new ApiError('Access Token Null', 401, 'Please add a token');
     }
     console.log(token);
-    jwt.verify(token, process.env.ASK_RESET_PASSWORD_TOKEN, (err, user) => {
+    console.log(process.env.ACCESS_TOKEN_SECRET);
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
       if (err) {
         throw new ApiError('Forbidden Request', 403, 'Forbidden');
       }
