@@ -166,15 +166,13 @@ async function addOneEvent(event) {
   return result.rows[0];
 }
 
-async function isCalendarNotFree(startDate, stopDate, playgroundId, eventId) {
+async function isCalendarNotFree(startDate, stopDate, playgroundId) {
   const query = {
     text: ` SELECT * FROM "encounter" 
             WHERE "playground_id"=$1 
-            AND "encounter"."id" <> $4
             AND "start_date" BETWEEN $2 AND $3;`,
-    values: [playgroundId, startDate, stopDate, eventId],
+    values: [playgroundId, startDate, stopDate],
   };
-
   const result = await db.query(query);
   return result.rows[0];
 }
