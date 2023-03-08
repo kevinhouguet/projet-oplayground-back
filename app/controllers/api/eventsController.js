@@ -57,10 +57,9 @@ module.exports = {
     event.stop_date = startDateFormat.add(2, 'hour').format();
 
     const isCalendarNotFree = await datamapper.isCalendarNotFree(
-      startDateFormat,
+      event.start_date,
       event.stop_date,
       event.playgroundId,
-      event.id,
     );
 
     if (isCalendarNotFree) throw new ApiError('Not Free', '', 'Schedule is full');
