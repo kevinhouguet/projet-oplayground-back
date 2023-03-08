@@ -87,13 +87,9 @@ module.exports = {
     const { id: userId } = req.user;
 
     const userIsInDB = await datamapper.getOneMember(parseInt(userId, 10));
-    if (!userIsInDB) {
-      throw new NotFoundError();
-    }
+    if (!userIsInDB) throw new NotFoundError();
 
-    if (user.password === '') {
-      delete user.password;
-    }
+    if (user.password && user.password === '') delete user.password;
     if (user.password && user.password !== '') {
       const hashedPassword = await bcrypt.hash(user.password, saltRounds);
 
@@ -122,20 +118,16 @@ module.exports = {
   async connectMember(req, res) {
     const user = req.body;
 
-    let searchMemberEmail = await datamapper.getOneMemberByEmail(user.email);
+    const searchMemberEmail = await datamapper.getOneMemberByEmail(user.email);
 
-    if (!searchMemberEmail) {
-      throw new NotFoundError();
-    }
+    if (!searchMemberEmail) throw new NotFoundError();
 
     const match = await bcrypt.compare(user.password, searchMemberEmail.password);
 
     if (match) {
-      searchMemberEmail = {
-        id: searchMemberEmail.id,
-      };
+      const member = { id: searchMemberEmail.id };
       // JWT : https://www.youtube.com/watch?v=mbsmsi7l3r4&t=804s
-      const accessToken = jwt.sign(searchMemberEmail, process.env.ACCESS_TOKEN_SECRET);
+      const accessToken = jwt.sign(member, process.env.ACCESS_TOKEN_SECRET);
       res.status(200).json({ accessToken });
     } else {
       throw new ApiError('Data Not Valid', 400, 'User credentials invalid');

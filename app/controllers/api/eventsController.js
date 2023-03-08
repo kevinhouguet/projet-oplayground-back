@@ -3,6 +3,7 @@ const datamapper = require('../../db/datamapper');
 
 const ApiError = require('../../errors/ApiError');
 const NotFoundError = require('../../errors/NotFound');
+const ApiForbiddenError = require('../../errors/ApiForbiddenError');
 
 module.exports = {
   async eventList(req, res) {
@@ -56,9 +57,7 @@ module.exports = {
       event.id,
     );
 
-    if (isCalendarNotFree) {
-      throw new ApiError('Not Free', '', 'Schedule is full');
-    }
+    if (isCalendarNotFree) throw new ApiError('Not Free', '', 'Schedule is full');
 
     const newEvent = await datamapper.addOneEvent(event);
 
@@ -74,7 +73,7 @@ module.exports = {
 
     const isEventInDb = await datamapper.getOneEvent(parseInt(eventId, 10));
     if (!isEventInDb) throw new NotFoundError();
-    if (isEventInDb.member_id !== parseInt(userId, 10)) throw new ApiError('Forbidden', 403, 'Not authorize');
+    if (isEventInDb.member_id !== parseInt(userId, 10)) throw new ApiForbiddenError('Token id and Member id in event are not the same');
 
     event.id = parseInt(eventId, 10);
 
@@ -106,7 +105,7 @@ module.exports = {
     const isEventInDb = await datamapper.getOneEvent(parseInt(eventId, 10));
 
     if (!isEventInDb) throw new NotFoundError();
-    if (isEventInDb.member_id !== parseInt(userId, 10)) throw new ApiError('Forbidden', 403, 'Not authorize');
+    if (isEventInDb.member_id !== parseInt(userId, 10)) throw new ApiForbiddenError('Token id and Member id in event are not the same');
 
     await datamapper.deleteOneEvent(parseInt(eventId, 10));
 
