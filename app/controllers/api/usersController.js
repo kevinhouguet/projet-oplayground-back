@@ -89,7 +89,9 @@ module.exports = {
     const userIsInDB = await datamapper.getOneMember(parseInt(userId, 10));
     if (!userIsInDB) throw new NotFoundError();
 
-    if (user.password && user.password === '') delete user.password;
+    if (user.password === '') {
+      delete user.password;
+    }
     if (user.password && user.password !== '') {
       const hashedPassword = await bcrypt.hash(user.password, saltRounds);
 
@@ -122,6 +124,7 @@ module.exports = {
 
     if (!searchMemberEmail) throw new NotFoundError();
     console.log(user);
+    console.log(searchMemberEmail);
 
     const match = await bcrypt.compare(user.password, searchMemberEmail.password);
 
