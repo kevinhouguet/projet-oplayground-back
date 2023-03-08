@@ -11,6 +11,12 @@ module.exports = {
     const events = await datamapper.getAllEvent(parseInt(userId, 10));
     if (!events) throw new NotFoundError();
 
+    events.map((element) => {
+      element.start_date = dayjs(element.start_date).format('DD/MM/YYYY - HH:mm');
+      element.stop_date = dayjs(element.stop_date).format('DD/MM/YYYY - HH:mm');
+      return true;
+    });
+
     res.status(200).json(events);
   },
   async addOneEvent(req, res) {
@@ -63,6 +69,9 @@ module.exports = {
 
     const newEventToSend = await datamapper.getOneEventWithAuthor(newEvent.id);
 
+    newEventToSend.start_date = dayjs(newEventToSend.start_date).format('DD/MM/YYYY - HH:mm');
+    newEventToSend.stop_date = dayjs(newEventToSend.stop_date).format('DD/MM/YYYY - HH:mm');
+
     res.status(200).json(newEventToSend);
   },
 
@@ -94,6 +103,9 @@ module.exports = {
     const eventFilled = { ...isEventInDb, ...event };
 
     const updatedEvent = await datamapper.updateOneEvent(eventFilled);
+
+    updatedEvent.start_date = dayjs(updatedEvent.start_date).format('DD/MM/YYYY - HH:mm');
+    updatedEvent.stop_date = dayjs(updatedEvent.stop_date).format('DD/MM/YYYY - HH:mm');
 
     res.status(200).json(updatedEvent);
   },
