@@ -13,34 +13,28 @@ module.exports = {
   },
 
   async getOneMember(req, res) {
-    const { userId } = req.params;
-    const { id: tokenUserId } = req.user;
+    // recuperation du token
+    const { id: userId } = req.user;
 
-    if (parseInt(userId, 10) !== tokenUserId) throw new ApiError('Forbidden', 403, 'Not authorize');
+    let member = await datamapper.getOneMember(parseInt(userId, 10));
 
-    if (!userId) {
-      throw new ApiError('Data Not Valid', 400, 'At least one mandatory data in error');
-    }
-
-    let members = await datamapper.getOneMember(parseInt(userId, 10));
-
-    if (!members) {
+    if (!member) {
       throw new NotFoundError();
     }
 
-    members = {
-      id: members.id,
-      firstname: members.firstname,
-      lastname: members.lastname,
-      username: members.username,
-      email: members.email,
-      avatar: members.avatar,
-      age: members.age,
-      sexe: members.sexe,
-      city: members.city,
+    member = {
+      id: member.id,
+      firstname: member.firstname,
+      lastname: member.lastname,
+      username: member.username,
+      email: member.email,
+      avatar: member.avatar,
+      age: member.age,
+      sexe: member.sexe,
+      city: member.city,
     };
 
-    res.json(members);
+    res.json(member);
   },
 
   async addOneMember(req, res) {
@@ -78,45 +72,35 @@ module.exports = {
     res.status(201).json(newUser);
   },
   async deleteOneMember(req, res) {
-    const { userId } = req.params;
-    const { id: tokenUserId } = req.user;
+    const { id: userId } = req.user;
 
-    if (parseInt(userId, 10) !== tokenUserId) throw new ApiError('Forbidden', 403, 'Not authorize');
+    const member = await datamapper.getOneMember(parseInt(userId, 10));
 
-    if (userId && isNaN(parseInt(userId, 10))) {
-      throw new ApiError('Data Not Valid', 400, 'At least one mandatory data in error');
-    }
-
-    await datamapper.getOneMember(parseInt(userId, 10));
+    if (!member) throw new NotFoundError();
 
     await datamapper.deleteOneMember(parseInt(userId, 10));
 
-    res.status(202).json({ message: 'user deleted successfully' });
+    res.status(200).end();
   },
   async updateOneMember(req, res) {
-    const { userId } = req.params;
     const user = req.body;
-    const { id: tokenUserId } = req.user;
+    const { id: userId } = req.user;
 
-    if (parseInt(userId, 10) !== tokenUserId) throw new ApiError('Forbidden', 403, 'Not authorize');
-
-    if (userId && isNaN(parseInt(userId, 10))) {
-      throw new ApiError('Data Not Valid', 400, 'At least one mandatory data in error');
+    const userIsInDB = await datamapper.getOneMember(parseInt(userId, 10));
+    if (!userIsInDB) {
+      throw new NotFoundError();
     }
 
-    if (user.password) {
-      console.log(`user mdp :${user.password}`);
+    if (user.password === '') {
+      delete user.password;
+    }
+    if (user.password && user.password !== '') {
       const hashedPassword = await bcrypt.hash(user.password, saltRounds);
 
       user.password = hashedPassword;
-      console.log(`user mdp hashed: ${hashedPassword}`);
     }
 
-    const userIsInDB = await datamapper.getOneMember(parseInt(userId, 10));
-
     const userFilled = { ...userIsInDB, ...user };
-
-    console.log(userFilled);
 
     let memberUpdated = await datamapper.updateOneMember(userFilled, parseInt(userId, 10));
 

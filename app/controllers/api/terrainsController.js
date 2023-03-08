@@ -58,11 +58,14 @@ module.exports = {
         city: playground.fields.commune,
         public: playground.fields.caract159,
         playgroundId: playground.recordid,
+        events: [],
       };
       const isPlaygroundAlreadyInDB = await datamapper.isPlaygroundAlreadyInDB(playgroundId);
       if (isPlaygroundAlreadyInDB) {
         const getEvents = await datamapper.getAllEventByPlaygroundId(isPlaygroundAlreadyInDB.id);
-        if (getEvents) playgroundFormat.events = getEvents;
+        if (getEvents) {
+          playgroundFormat.events = getEvents;
+        }
       }
       // On retire les salles seulement pour les écoles.
       const onlySchool = playground.fields.caract159 === 'Scolaires, universités';
@@ -71,8 +74,7 @@ module.exports = {
         apiDataArray.push(playgroundFormat);
       }
     }));
-
-    res.json(apiDataArray);
+    res.json(apiDataArray[0]);
   },
 
   // playgroundEvent: (req, res) => {

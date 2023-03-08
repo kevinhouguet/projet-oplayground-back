@@ -136,10 +136,12 @@ async function getAllEvent(userId) {
   return result.rows;
 }
 
-async function getAllEventByPlaygroundId(playground_id) {
+async function getAllEventByPlaygroundId(playgroundId) {
   const query = {
-    text: 'SELECT * FROM "encounter" WHERE "playground_id"=$1;',
-    values: [playground_id],
+    text: ` SELECT "encounter".*, "member"."email" as "author_email"  FROM "encounter"
+            INNER JOIN "member" ON "member"."id" = "encounter"."member_id"
+            WHERE "encounter"."playground_id"=$1`,
+    values: [playgroundId],
   };
   const result = await db.query(query);
   return result.rows;
@@ -231,6 +233,18 @@ async function getOneEvent(id) {
   return result.rows[0];
 }
 
+async function getOneEventWithAuthor(id) {
+  const query = {
+    text: ` SELECT "encounter".*, "member"."email" as "author_email"  FROM "encounter"
+            INNER JOIN "member" ON "member"."id" = "encounter"."member_id"
+            WHERE "encounter"."id"=$1`,
+    values: [id],
+  };
+
+  const result = await db.query(query);
+  return result.rows[0];
+}
+
 async function deleteOneEvent(id) {
   const query = {
     text: ' DELETE FROM "encounter" WHERE id=$1',
@@ -258,4 +272,5 @@ module.exports = {
   deleteOneEvent,
   isPlaygroundAlreadyInDB,
   getAllEventByPlaygroundId,
+  getOneEventWithAuthor,
 };

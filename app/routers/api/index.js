@@ -48,21 +48,13 @@ const { post: eventPostSchema, patch: eventPatchSchema } = require('../../valida
 apiRouter.post('/users', validate(userPostSchema, 'body'), controllerErrorHandler(usersController.addOneMember));
 /**
  * @swagger
- *  /users/{userId}:
+ *  /users:
  *    get:
  *      tags:
  *        - Users
  *      summary: Find user by ID
  *      description: Returns a single user
  *      operationId: getUserById
- *      parameters:
- *        - name: userID
- *          in: path
- *          description: ID of user to return
- *          required: true
- *          schema:
- *            type: integer
- *            format: int64
  *      responses:
  *        200:
  *          description: successful operation
@@ -73,7 +65,7 @@ apiRouter.post('/users', validate(userPostSchema, 'body'), controllerErrorHandle
  *      security:
  *       - Authorization: []
  */
-apiRouter.get('/users/:userId', controllerErrorHandler(authenticationControl), controllerErrorHandler(usersController.getOneMember));
+apiRouter.get('/users', controllerErrorHandler(authenticationControl), controllerErrorHandler(usersController.getOneMember));
 /**
  * @swagger
  * /users/{userId}:
@@ -82,13 +74,6 @@ apiRouter.get('/users/:userId', controllerErrorHandler(authenticationControl), c
  *      - Users
  *    summary: Delete an user
  *    description: Delete an user
- *    parameters:
- *       - name: userId
- *         in: path
- *         description: ID of user to delete
- *         required: true
- *         schema:
- *           type: integer
  *    responses:
  *      202:
  *        description: Returns successfully request
@@ -96,31 +81,25 @@ apiRouter.get('/users/:userId', controllerErrorHandler(authenticationControl), c
  *        description: Returns a JSON with error message
  *      404:
  *        description: Returns a not found error
+ *    security:
+ *     - Authorization: []
  */
-apiRouter.delete('/users/:userId', controllerErrorHandler(authenticationControl), controllerErrorHandler(usersController.deleteOneMember));
+apiRouter.delete('/users', controllerErrorHandler(authenticationControl), controllerErrorHandler(usersController.deleteOneMember));
 /**
  * @swagger
- * /users/{userId}:
+ * /users:
  *  patch:
  *    tags:
  *      - Users
  *    summary: Update an user
  *    description: Update an user
- *    parameters:
- *       - name: userId
- *         in: path
- *         description: ID of user
- *         required: true
- *         schema:
- *           type: integer
- *           format: int64
  *    responses:
  *      202:
  *        description: Returns an User object
  *        content:
  *          application/json:
  *              schema:
- *                $ref: '#/components/schemas/User'
+ *                $ref: #/components/schemas/User
  *      400:
  *        description: Returns a JSON with error message
  *      404:
@@ -128,7 +107,7 @@ apiRouter.delete('/users/:userId', controllerErrorHandler(authenticationControl)
  *    security:
  *      - Authorization: []
  */
-apiRouter.patch('/users/:userId', validate(userPatchSchema, 'body'), controllerErrorHandler(authenticationControl), controllerErrorHandler(usersController.updateOneMember));
+apiRouter.patch('/users', controllerErrorHandler(authenticationControl), validate(userPatchSchema, 'body'), controllerErrorHandler(usersController.updateOneMember));
 /**
  * @swagger
  * /users/signin:
@@ -156,28 +135,73 @@ apiRouter.patch('/users/:userId', validate(userPatchSchema, 'body'), controllerE
  *        description: Returns a not found error
  */
 apiRouter.post('/users/signin', validate(userSigninSchema, 'body'), controllerErrorHandler(usersController.connectMember));
+/**
+ * @swagger
+ * /terrains:
+ *  get:
+ *    tags:
+ *      - Playground
+ *    summary: Retrieve all playground by commune
+ *    description: Retrieve all playground by commune
+ *    parameters:
+ *       - name: commune
+ *         in: query
+ *         description: Name of commune
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - name: codepostal
+ *         in: query
+ *         description: Zip Code of commune
+ *         required: true
+ *         schema:
+ *           type: string
+ *    responses:
+ *      202:
+ *        description: Returns an array of Playground
+ *      400:
+ *        description: Returns a JSON with error message
+ *      404:
+ *        description: Returns a not found error
+ */
 apiRouter.get('/terrains', controllerErrorHandler(terrainsController.playgroundList));
-
+/**
+ * @swagger
+ * /terrains/{playgroundId}:
+ *  get:
+ *    tags:
+ *      - Playground
+ *    summary: Retrieve One playground
+ *    description: Retrieve One playground
+ *    parameters:
+ *       - name: playgroundId
+ *         in: path
+ *         description: ID of playground
+ *         required: true
+ *         schema:
+ *           type: string
+ *    responses:
+ *      202:
+ *        description: Returns an array of Playground
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#components/schemas/Playground'
+ *      400:
+ *        description: Returns a JSON with error message
+ *      404:
+ *        description: Returns a not found error
+ */
 apiRouter.get('/terrains/:playgroundId', controllerErrorHandler(terrainsController.playgroundById));
-
-// apiRouter.get('/terrains/:id/events', controllerErrorHandler(terrainsController.playgroundEvent));
 
 /**
  * @swagger
- * /users/{userId}/events:
+ * /events:
  *  get:
  *    tags:
- *      - Users
+ *      - Events
  *    summary: Retrieve events for a user
  *    description: Retrieve events for a user
- *    parameters:
- *       - name: userId
- *         in: path
- *         description: ID of user which have event to consulte
- *         required: true
- *         schema:
- *           type: integer
- *           format: int64
  *    responses:
  *      202:
  *        description: Returns an array of events
@@ -188,9 +212,32 @@ apiRouter.get('/terrains/:playgroundId', controllerErrorHandler(terrainsControll
  *    security:
  *      - Authorization: []
  */
-apiRouter.get('/users/:userId/events', authenticationControl, controllerErrorHandler(eventsController.eventList));
-
-apiRouter.post('/users/:userId/events', validate(eventPostSchema, 'body'), authenticationControl, controllerErrorHandler(eventsController.addOneEvent));
+apiRouter.get('/events', controllerErrorHandler(authenticationControl), controllerErrorHandler(eventsController.eventList));
+/**
+ * @swagger
+ * /events:
+ *  post:
+ *    tags:
+ *      - Events
+ *    summary: Create one event by userid
+ *    description: Create one event by userid
+ *    requestBody:
+ *      description: Signin a user
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#components/schemas/Event'
+ *    responses:
+ *      202:
+ *        description: Returns an array of events
+ *      400:
+ *        description: Returns a JSON with error message
+ *      404:
+ *        description: Returns a not found error
+ *    security:
+ *      - Authorization: []
+ */
+apiRouter.post('/events', controllerErrorHandler(authenticationControl), validate(eventPostSchema, 'body'), controllerErrorHandler(eventsController.addOneEvent));
 /**
  * @swagger
  * /events/{eventId}:
@@ -207,6 +254,12 @@ apiRouter.post('/users/:userId/events', validate(eventPostSchema, 'body'), authe
  *         schema:
  *           type: integer
  *           format: int64
+ *    requestBody:
+ *      description: Update an event
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#components/schemas/Event'
  *    responses:
  *      202:
  *        description: Returns an Event object
@@ -221,8 +274,34 @@ apiRouter.post('/users/:userId/events', validate(eventPostSchema, 'body'), authe
  *    security:
  *      - Authorization: []
  */
-apiRouter.patch('/events/:eventId', validate(eventPatchSchema, 'body'), authenticationControl, controllerErrorHandler(eventsController.updateOneEvent));
-apiRouter.delete('/events/:eventId', authenticationControl, controllerErrorHandler(eventsController.deleteOneEvent));
+apiRouter.patch('/events/:eventId', controllerErrorHandler(authenticationControl), validate(eventPatchSchema, 'body'), controllerErrorHandler(eventsController.updateOneEvent));
+/**
+ * @swagger
+ * /events/{eventId}:
+ *  delete:
+ *    tags:
+ *      - Events
+ *    summary: Delete an event
+ *    description: Delete an event
+ *    parameters:
+ *       - name: eventId
+ *         in: path
+ *         description: ID of event
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           format: int64
+ *    responses:
+ *      202:
+ *        description: Returns successfull operation
+ *      400:
+ *        description: Returns a JSON with error message
+ *      404:
+ *        description: Returns a not found error
+ *    security:
+ *      - Authorization: []
+ */
+apiRouter.delete('/events/:eventId', controllerErrorHandler(authenticationControl), controllerErrorHandler(eventsController.deleteOneEvent));
 
 // ROUTE 404
 apiRouter.use((req, res, next) => {
