@@ -3,12 +3,19 @@ const datamapper = require('../../db/datamapper');
 
 const ApiError = require('../../errors/ApiError');
 const NotFoundError = require('../../errors/NotFound');
+const ApiForbiddenError = require('../../errors/ApiForbiddenError');
 
 module.exports = {
   async eventList(req, res) {
     const { id: userId } = req.user;
     const events = await datamapper.getAllEvent(parseInt(userId, 10));
     if (!events) throw new NotFoundError();
+
+    events.map((element) => {
+      element.start_date = dayjs(element.start_date).format('DD/MM/YYYY - HH:mm');
+      element.stop_date = dayjs(element.stop_date).format('DD/MM/YYYY - HH:mm');
+      return true;
+    });
 
     res.status(200).json(events);
   },
@@ -56,13 +63,14 @@ module.exports = {
       event.id,
     );
 
-    if (isCalendarNotFree) {
-      throw new ApiError('Not Free', '', 'Schedule is full');
-    }
+    if (isCalendarNotFree) throw new ApiError('Not Free', '', 'Schedule is full');
 
     const newEvent = await datamapper.addOneEvent(event);
 
     const newEventToSend = await datamapper.getOneEventWithAuthor(newEvent.id);
+
+    newEventToSend.start_date = dayjs(newEventToSend.start_date).format('DD/MM/YYYY - HH:mm');
+    newEventToSend.stop_date = dayjs(newEventToSend.stop_date).format('DD/MM/YYYY - HH:mm');
 
     res.status(200).json(newEventToSend);
   },
@@ -74,7 +82,7 @@ module.exports = {
 
     const isEventInDb = await datamapper.getOneEvent(parseInt(eventId, 10));
     if (!isEventInDb) throw new NotFoundError();
-    if (isEventInDb.member_id !== parseInt(userId, 10)) throw new ApiError('Forbidden', 403, 'Not authorize');
+    if (isEventInDb.member_id !== parseInt(userId, 10)) throw new ApiForbiddenError('Token id and Member id in event are not the same');
 
     event.id = parseInt(eventId, 10);
 
@@ -96,6 +104,9 @@ module.exports = {
 
     const updatedEvent = await datamapper.updateOneEvent(eventFilled);
 
+    updatedEvent.start_date = dayjs(updatedEvent.start_date).format('DD/MM/YYYY - HH:mm');
+    updatedEvent.stop_date = dayjs(updatedEvent.stop_date).format('DD/MM/YYYY - HH:mm');
+
     res.status(200).json(updatedEvent);
   },
 
@@ -106,7 +117,7 @@ module.exports = {
     const isEventInDb = await datamapper.getOneEvent(parseInt(eventId, 10));
 
     if (!isEventInDb) throw new NotFoundError();
-    if (isEventInDb.member_id !== parseInt(userId, 10)) throw new ApiError('Forbidden', 403, 'Not authorize');
+    if (isEventInDb.member_id !== parseInt(userId, 10)) throw new ApiForbiddenError('Token id and Member id in event are not the same');
 
     await datamapper.deleteOneEvent(parseInt(eventId, 10));
 

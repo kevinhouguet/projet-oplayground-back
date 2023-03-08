@@ -1,4 +1,5 @@
 const datamapper = require('../../db/datamapper');
+const NotFoundError = require('../../errors/NotFound');
 
 module.exports = {
 
@@ -9,6 +10,8 @@ module.exports = {
     const data = await httpResponse.json();
 
     const apiDataArray = [];
+
+    if (!data.records.length) throw new NotFoundError();
 
     data.records.forEach((playground) => {
       if (playground.fields.codepostal.length < 5) playground.fields.codepostal = `0${playground.fields.codepostal}`;

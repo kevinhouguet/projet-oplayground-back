@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
-const ApiError = require('../../errors/ApiError');
+const ApiForbiddenError = require('../../errors/ApiForbiddenError');
+const ApiUnauthorizeError = require('../../errors/ApiUnauthorizeError');
 
 module.exports = {
   authenticationControl(req, res, next) {
@@ -8,11 +9,11 @@ module.exports = {
     // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Operators/Logical_AND_assignment
     const token = authHeader && authHeader.split(' ')[1];
     if (token == null) {
-      throw new ApiError('Access Token Null', 401, 'Please add a token');
+      throw new ApiUnauthorizeError('Token null');
     }
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
       if (err) {
-        throw new ApiError('Forbidden Request', 403, 'Forbidden');
+        throw new ApiForbiddenError('Invalid JWT Signature');
       }
       req.user = user;
     });
