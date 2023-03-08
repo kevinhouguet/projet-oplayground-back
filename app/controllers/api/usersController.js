@@ -121,6 +121,7 @@ module.exports = {
     const searchMemberEmail = await datamapper.getOneMemberByEmail(user.email);
 
     if (!searchMemberEmail) throw new NotFoundError();
+    console.log(user);
 
     const match = await bcrypt.compare(user.password, searchMemberEmail.password);
 

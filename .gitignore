@@ -5,3 +5,4 @@ sqitch.conf
 *.http
 .gitattributes
 docs/
+test*.js
