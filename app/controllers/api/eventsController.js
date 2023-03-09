@@ -16,6 +16,9 @@ module.exports = {
       element.startHour = dayjs(element.start_date).format('HH:mm');
       element.stopDate = dayjs(element.stop_date).format('DD/MM/YYYY');
       element.stopHour = dayjs(element.stop_date).format('HH:mm');
+
+      element.start_date = dayjs(element.start_date).format('DD/MM/YYYY - HH:mm');
+      element.stop_date = dayjs(element.stop_date).format('DD/MM/YYYY - HH:mm');
       return true;
     });
 
@@ -75,6 +78,9 @@ module.exports = {
     newEventToSend.stopDate = dayjs(newEventToSend.stop_date).format('DD/MM/YYYY');
     newEventToSend.stopHour = dayjs(newEventToSend.stop_date).format('HH:mm');
 
+    newEventToSend.start_date = dayjs(newEventToSend.start_date).format('DD/MM/YYYY - HH:mm');
+    newEventToSend.stop_date = dayjs(newEventToSend.stop_date).format('DD/MM/YYYY - HH:mm');
+
     res.status(200).json(newEventToSend);
   },
 
@@ -111,6 +117,9 @@ module.exports = {
     updatedEvent.startHour = dayjs(updatedEvent.start_date).format('HH:mm');
     updatedEvent.stopDate = dayjs(updatedEvent.stop_date).format('DD/MM/YYYY');
     updatedEvent.stopHour = dayjs(updatedEvent.stop_date).format('HH:mm');
+
+    updatedEvent.start_date = dayjs(updatedEvent.start_date).format('DD/MM/YYYY - HH:mm');
+    updatedEvent.stop_date = dayjs(updatedEvent.stop_date).format('DD/MM/YYYY - HH:mm');
 
     res.status(200).json(updatedEvent);
   },
