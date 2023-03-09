@@ -89,6 +89,8 @@ module.exports = {
     const { id: userId } = req.user;
     const event = req.body;
 
+    console.log(event);
+
     const isEventInDb = await datamapper.getOneEvent(parseInt(eventId, 10));
     if (!isEventInDb) throw new NotFoundError();
     if (isEventInDb.member_id !== parseInt(userId, 10)) throw new ApiForbiddenError('Token id and Member id in event are not the same');
