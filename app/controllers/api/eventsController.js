@@ -12,9 +12,9 @@ module.exports = {
     if (!events) throw new NotFoundError();
 
     events.map((element) => {
-      element.startDate = dayjs(element.start_date).format('DD-MM-YYYY');
+      element.startDate = dayjs(element.start_date).format('YYYY-MM-DD');
       element.startHour = dayjs(element.start_date).format('HH:mm');
-      element.stopDate = dayjs(element.stop_date).format('DD-MM-YYYY');
+      element.stopDate = dayjs(element.stop_date).format('YYYY-MM-DD');
       element.stopHour = dayjs(element.stop_date).format('HH:mm');
 
       element.start_date = dayjs(element.start_date).format('DD/MM/YYYY - HH:mm');
@@ -73,9 +73,9 @@ module.exports = {
 
     const newEventToSend = await datamapper.getOneEventWithAuthor(newEvent.id);
 
-    newEventToSend.startDate = dayjs(newEventToSend.start_date).format('DD-MM-YYYY');
+    newEventToSend.startDate = dayjs(newEventToSend.start_date).format('YYYY-MM-DD');
     newEventToSend.startHour = dayjs(newEventToSend.start_date).format('HH:mm');
-    newEventToSend.stopDate = dayjs(newEventToSend.stop_date).format('DD-MM-YYYY');
+    newEventToSend.stopDate = dayjs(newEventToSend.stop_date).format('YYYY-MM-DD');
     newEventToSend.stopHour = dayjs(newEventToSend.stop_date).format('HH:mm');
 
     newEventToSend.start_date = dayjs(newEventToSend.start_date).format('DD/MM/YYYY - HH:mm');
@@ -113,9 +113,9 @@ module.exports = {
 
     const updatedEvent = await datamapper.updateOneEvent(eventFilled);
 
-    updatedEvent.startDate = dayjs(updatedEvent.start_date).format('DD-MM-YYYY');
+    updatedEvent.startDate = dayjs(updatedEvent.start_date).format('YYYY-MM-DD');
     updatedEvent.startHour = dayjs(updatedEvent.start_date).format('HH:mm');
-    updatedEvent.stopDate = dayjs(updatedEvent.stop_date).format('DD-MM-YYYY');
+    updatedEvent.stopDate = dayjs(updatedEvent.stop_date).format('YYYY-MM-DD');
     updatedEvent.stopHour = dayjs(updatedEvent.stop_date).format('HH:mm');
 
     updatedEvent.start_date = dayjs(updatedEvent.start_date).format('DD/MM/YYYY - HH:mm');
