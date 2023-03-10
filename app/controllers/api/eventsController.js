@@ -38,6 +38,7 @@ module.exports = {
       const data = await httpResponse.json();
 
       await Promise.all(data.records.map(async (playground) => {
+        if (playground.fields.codepostal.length < 5) playground.fields.codepostal = `0${playground.fields.codepostal}`;
         const playgroundFormat = {
         // Voir doc api data-es : https://equipements.sports.gouv.fr/explore/dataset/data-es/information/
           name: playground.fields.nomequipement,
