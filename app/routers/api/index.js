@@ -58,6 +58,10 @@ apiRouter.post('/users', validate(userPostSchema, 'body'), controllerErrorHandle
  *      responses:
  *        200:
  *          description: successful operation
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/User'
  *        400:
  *          description: Invalid ID supplied
  *        404:
@@ -75,7 +79,7 @@ apiRouter.get('/users', controllerErrorHandler(authenticationControl), controlle
  *    summary: Delete an user
  *    description: Delete an user
  *    responses:
- *      202:
+ *      200:
  *        description: Returns successfully request
  *      400:
  *        description: Returns a JSON with error message
@@ -93,13 +97,19 @@ apiRouter.delete('/users', controllerErrorHandler(authenticationControl), contro
  *      - Users
  *    summary: Update an user
  *    description: Update an user
+ *    requestBody:
+ *      description: Signin a user
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#components/schemas/Event'
  *    responses:
  *      202:
  *        description: Returns an User object
  *        content:
  *          application/json:
  *              schema:
- *                $ref: #/components/schemas/User
+ *                $ref: '#/components/schemas/User'
  *      400:
  *        description: Returns a JSON with error message
  *      404:
@@ -158,7 +168,13 @@ apiRouter.post('/users/signin', validate(userSigninSchema, 'body'), controllerEr
  *           type: string
  *    responses:
  *      202:
- *        description: Returns an array of Playground
+ *        description: Returns an array of Playgrounds
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#components/schemas/Playground'
  *      400:
  *        description: Returns a JSON with error message
  *      404:
@@ -205,6 +221,12 @@ apiRouter.get('/terrains/:playgroundId', controllerErrorHandler(terrainsControll
  *    responses:
  *      202:
  *        description: Returns an array of events
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#components/schemas/Event'
  *      400:
  *        description: Returns a JSON with error message
  *      404:
