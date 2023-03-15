@@ -37,6 +37,7 @@ module.exports = {
       const httpResponse = await fetch(url);
       const data = await httpResponse.json();
 
+      // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
       await Promise.all(data.records.map(async (playground) => {
         if (playground.fields.codepostal.length < 5) playground.fields.codepostal = `0${playground.fields.codepostal}`;
         const playgroundFormat = {

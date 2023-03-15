@@ -1,3 +1,4 @@
+// TODO : updating url serveur
 module.exports = {
   definition: {
     openapi: '3.0.0',

@@ -1,19 +1,18 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt'); // module for hashing password and matching
+const jwt = require('jsonwebtoken'); // module for authentication
 const datamapper = require('../../db/datamapper');
 const ApiError = require('../../errors/ApiError');
 const NotFoundError = require('../../errors/NotFound');
 
-const saltRounds = 10;
+const saltRounds = 10; // var in convenience with bcrypt
 
 module.exports = {
   async getAllMember(req, res) {
     const members = await datamapper.getAllMember();
-    res.json(members);
+    res.status(200).json(members);
   },
 
   async getOneMember(req, res) {
-    // recuperation du token
     const { id: userId } = req.user;
 
     let member = await datamapper.getOneMember(parseInt(userId, 10));
@@ -34,15 +33,11 @@ module.exports = {
       city: member.city,
     };
 
-    res.json(member);
+    res.status(200).json(member);
   },
 
   async addOneMember(req, res) {
     const user = req.body;
-
-    if (!user.email || !user.password) {
-      throw new ApiError('Data Not Valid', 400, 'At least one mandatory data is not transmit');
-    }
 
     const searchMemberEmail = await datamapper.getOneMemberByEmail(user.email);
     const searchMemberUsername = await datamapper.getOneMemberByUsername(user.username);
@@ -51,6 +46,7 @@ module.exports = {
       throw new ApiError('Already Exist', 400, 'User already exist');
     }
 
+    // https://www.npmjs.com/package/bcrypt
     const hashedPassword = await bcrypt.hash(user.password, saltRounds);
 
     user.password = hashedPassword;
@@ -118,6 +114,7 @@ module.exports = {
   },
 
   async connectMember(req, res) {
+    // /api/users/signin
     const user = req.body;
 
     const searchMemberEmail = await datamapper.getOneMemberByEmail(user.email);

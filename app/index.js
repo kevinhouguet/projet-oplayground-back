@@ -1,4 +1,5 @@
 const express = require('express');
+// cross origin
 const cors = require('cors');
 const { swaggerUi, openapiSpecification } = require('./swagger');
 const routers = require('./routers');
@@ -13,6 +14,7 @@ app.use(cors({
 }));
 
 app.use('/docs', express.static('docs'));
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 

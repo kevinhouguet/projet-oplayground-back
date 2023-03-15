@@ -13,6 +13,8 @@ const validate = require('../../validation/validator');
 const { post: userPostSchema, patch: userPatchSchema, signin: userSigninSchema } = require('../../validation/schemas/member.schema');
 const { post: eventPostSchema, patch: eventPatchSchema } = require('../../validation/schemas/events.schema');
 
+// Swagger doc here : https://editor.swagger.io/
+
 /**
  * @swagger
  *  /users:

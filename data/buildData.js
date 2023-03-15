@@ -100,9 +100,14 @@ const insertData = {
   },
 };
 
+// function IIFE : Immediately Invoked Function Expression
+// put context asynchrone
+// https://www.alexis-guay.fr/javascript/cest-quoi-les-iife-en-javascript/
+
 (async () => {
   const communes = await getCommunes();
 
+  // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/from
   Array.from({ length: 10 }, async () => {
     const member = await createData.createRandomMember(communes);
     console.log(member);

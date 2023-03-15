@@ -1,4 +1,5 @@
 const Joi = require('joi');
+// https:// joi.dev/api/?v=17.8.3
 require('dotenv').config();
 
 const emailRule = Joi.string().pattern(/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9.-]+.[a-z]+$/);

@@ -1,5 +1,7 @@
 const db = require('./index');
 
+// JSDOC documentation : https://jsdoc.app/ OR https://devhints.io/jsdoc
+
 /**
  * A member
  * @typedef {Object} Member
@@ -45,6 +47,14 @@ async function getAllMember() {
  * @returns {Object}
  */
 async function getOneMember(id) {
+  // other syntaxe :
+  // const text = ' SELECT ...'
+  // const values = [id]
+  // const result = await db.query(text,values);
+
+  // secure less :
+  // const text = `SELECT * FROM "member" WHERE id=${id};`
+
   const query = {
     text: 'SELECT * FROM "member" WHERE id=$1;',
     values: [id],

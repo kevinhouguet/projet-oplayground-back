@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { Client } = require('pg');
 
+// https://node-postgres.com/apis/client
 let client;
 
 if (process.env.NODE_ENV === 'production') {

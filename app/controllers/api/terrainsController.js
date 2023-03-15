@@ -4,6 +4,7 @@ const NotFoundError = require('../../errors/NotFound');
 module.exports = {
 
   playgroundList: async (req, res) => {
+    // /api/terrains?commune=nomDeLaCommune&codepostal=numeroDeCodePostal
     const { commune, codepostal } = req.query;
     const url = `https://equipements.sports.gouv.fr/api/records/1.0/search/?dataset=data-es&q=nom_commune%3D${commune}`;
     const httpResponse = await fetch(url);
@@ -37,10 +38,11 @@ module.exports = {
       }
     });
 
-    res.json(apiDataArray);
+    res.status(200).json(apiDataArray);
   },
 
   playgroundById: async (req, res) => {
+    // /api/terrains/playgroundId
     const { playgroundId } = req.params;
     const url = `https://equipements.sports.gouv.fr/api/records/1.0/search/?dataset=data-es&q=recordid%3D${playgroundId}`;
     const httpResponse = await fetch(url);
@@ -63,6 +65,7 @@ module.exports = {
         playgroundId: playground.recordid,
         events: [],
       };
+      // for fill events array we must checking if playground is already in db
       const isPlaygroundAlreadyInDB = await datamapper.isPlaygroundAlreadyInDB(playgroundId);
       if (isPlaygroundAlreadyInDB) {
         const getEvents = await datamapper.getAllEventByPlaygroundId(isPlaygroundAlreadyInDB.id);
@@ -71,6 +74,7 @@ module.exports = {
         }
       }
       // On retire les salles seulement pour les écoles.
+      // for optimising : put this before all process
       const onlySchool = playground.fields.caract159 === 'Scolaires, universités';
 
       if (!onlySchool) {
@@ -79,8 +83,4 @@ module.exports = {
     }));
     res.json(apiDataArray[0]);
   },
-
-  // playgroundEvent: (req, res) => {
-  //   res.json({ message: 'bienvenue dans mes events' });
-  // },
 };
