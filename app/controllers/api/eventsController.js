@@ -43,9 +43,9 @@ module.exports = {
         const playgroundFormat = {
         // Voir doc api data-es : https://equipements.sports.gouv.fr/explore/dataset/data-es/information/
           name: playground.fields.nomequipement,
-          surface: playground.fields.caract167,
-          type: playground.fields.typequipement,
-          address: playground.fields.adresse,
+          surface: playground.fields.caract167 || 'surface inconnu',
+          type: playground.fields.typequipement || 'type inconnu',
+          address: playground.fields.adresse || 'adresse inconnue',
           zipCode: playground.fields.codepostal,
           city: playground.fields.commune,
           public: playground.fields.caract159,
